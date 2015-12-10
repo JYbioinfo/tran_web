@@ -18,6 +18,8 @@ API_service = "http://%s:%s" % (config.get(env, "api_host"), config.get(env, "ap
 
 def create_app():
     app = Flask("__name__")
+    from view_list import list_view as list_view_blueprint
+    app.register_blueprint(list_view_blueprint)
 
     return app
 
