@@ -47,6 +47,9 @@ def load_user(account):
         return user
     return None
 
+login_manager.login_view = "/login"
+
+
 def create_app():
     app = Flask("__name__")
     app.secret_key = 'web string'
