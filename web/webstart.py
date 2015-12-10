@@ -2,12 +2,12 @@
 # Create Date 2015/12/9
 
 from web import create_app, web_listen_ip, web_port, env
-app = create_app
+app = create_app()
 if env != "Production" and env != "Test":
     if __name__ == '__main__':
         # from werkzeug.contrib.fixers import ProxyFix
         # app.wsgi app = ProxyFix(app.wsgi_app)
-        app.run(host=web_listen_ip, threaded=True, debug=True, port=web_port)
+        app.run(host="127.0.0.1", threaded=True, debug=True, port=int(web_port))
 
     
 
