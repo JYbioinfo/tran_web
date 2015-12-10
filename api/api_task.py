@@ -35,7 +35,8 @@ def task_list_get():
         user_flag = user_affirm(account,password)
         if user_flag == 0:
             return json.dumps({"status":"user not exit"})
-        select_sql = "SELECT sys_no,disease_id,disease_name,disease_name_zn FROM disease_detail WHERE flag = 0 limit 0,10;"
+        select_sql = "SELECT sys_no,disease_id,disease_name,disease_name_zn " \
+                     "FROM disease_detail WHERE flag = 0 AND available = 0 limit 0,100;"
         re = db.execute(select_sql)
         if re > 0:
             result = db.fetchall()
@@ -45,6 +46,8 @@ def task_list_get():
         for item in result:
             dict1 = {}
             sys_no,disease_id,disease_name,disease_name_zn = item
+            set_sql = "UPDATE disease_detail SET available = 1 WHERE sys_no = %d;" % sys_no
+            re = db.execute(set_sql)
             dict1["sys_no"] = sys_no
             dict1["disease_id"] = disease_id
             dict1["disease_name"] = disease_name
@@ -122,6 +125,36 @@ def disease_info_update(sys_no):
             return json.dumps({"status":"success!","data":postdata})
         else:
             return json.dumps({"status":"failed to update"})
+    except Exception,e:
+        print str(e)
+        return json.dumps({"status": 701, "message": "Internal error %s" % str(e)})
+
+
+@task_api.route("/tasks/reset/",methods=["PUT"])
+def reset_available():
+    try:
+        postdata = json.loads(request.data)
+        account = postdata["account"]
+        password = postdata["password"]
+        if type(account) != str and type(account) != unicode and len(account) <= 0:
+            return json.dumps({"status":"403, account"})
+        if type(password) != str and type(password) != unicode and len(password) <= 0:
+            return json.dumps({"status":"403, account"})
+        user_flag = user_affirm(account,password)
+        if user_flag == 0:
+            return json.dumps({"status":"user not exit"})
+        sys_no_list = postdata.get("sys_no_list")
+        if sys_no_list is None:
+            return json.dumps({"status":"403, sys_no_list not exit"})
+        elif type(sys_no_list) != list:
+            return json.dumps({"status":"403, sys_no_list need list"})
+        failed_list = []
+        for sys_no in sys_no_list:
+            reset_sql = "UPDATE disease_detail SET available = 0 WHERE sys_no = %d;" % sys_no
+            re = db.execute(reset_sql)
+            if re == 0:
+                failed_list.append(sys_no)
+        return json.dumps({"status": "success!", "data": {"failed":failed_list}})
     except Exception,e:
         print str(e)
         return json.dumps({"status": 701, "message": "Internal error %s" % str(e)})
