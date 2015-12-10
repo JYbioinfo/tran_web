@@ -2,18 +2,23 @@
 # Create Date 2015/12/10
 __author__ = 'wubo'
 import requests,json
-from flask import Blueprint, render_template, redirect, request, url_for
+from flask import Blueprint, render_template, redirect, request, url_for,flash
 from web import API_service
-from flask_login import login_user,login_required, current_user
+from flask_login import login_user, login_required, current_user, logout_user
 from web.forms.login_form import LoginForm
 list_view = Blueprint("list_view", __name__)
 list_html = "list.html"
 login_html= "sign.html"
 
 
+@list_view.errorhandler(401)
+def need_auth(error):
+    return redirect("/login")
+
+
 @list_view.route("/", methods=["GET", "PUT"])
 def hello():
-    return redirect("/login")
+    return redirect("/tasks")
 
 
 @list_view.route("/login", methods=["GET", "POST"])
@@ -23,8 +28,14 @@ def login():
         # login and validate the user...
         login_user(user)
         flash("Logged in successfully.")
-        return redirect(request.args.get("next") or url_for("tasks"))
+        return redirect(request.args.get("next") or "/tasks")
     return render_template(login_html, form=form)
+
+
+@list_view.route("/logout")
+def logout():
+    logout_user()
+    return redirect("/login")
 
 
 @list_view.route("/tasks", methods=["GET", "PUT"])

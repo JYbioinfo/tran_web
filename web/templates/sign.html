@@ -10,7 +10,9 @@
 <body>
 <!-- 登陆页 start -->
 <div class="container">
+  {% block content %}
   <form class="form-signin">
+    {{form.hidden_tag()}}
     <h4 class="form-signin-heading text-center bottom20">欢迎进入系统，请先登陆。</h4>
     <div class="form-group sign-group">
       <label for="">用户名：</label>
@@ -19,6 +21,9 @@
     <div class="form-group sign-group">
       <label for="exampleInputPassword1">密码：</label>
       <input type="password" class="form-control width78" id="exampleInputPassword1" placeholder="请填写密码">
+      {% for error in form.errors.openid %}
+      <span style="color: red;">[{{error}}]</span>
+      {% endfor %}
     </div>
     <div class="checkbox remeber">
       <label>
@@ -27,6 +32,7 @@
     </div>
     <button class="btn btn-lg btn-primary btn-block" type="submit">登陆</button>
   </form>
+  {% endblock %}
 </div>
 <!-- 登陆页 end -->
 </body>

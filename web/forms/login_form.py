@@ -3,14 +3,13 @@
 __author__ = 'wubo'
 from flask.ext.wtf import Form
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
-from wtforms.validators import Required, Length, Email, Regexp, EqualTo
+from wtforms.validators import DataRequired, Length, Email, Regexp, EqualTo
 from wtforms import ValidationError
 
 
 class LoginForm(Form):
-    email = StringField('Email', validators=[Required(), Length(1, 64),
-                                             Email()])
-    password = PasswordField('Password', validators=[Required()])
+    account = StringField("account", validators=[DataRequired(message=u'用户名不能为空！'), Length(4, 20, message=u'用户名长度必须是4-20位！')])
+    passwd = PasswordField("password", validators=[DataRequired(message=u'密码不正确！'), Length(5, 16, message=u'密码长度为5-16位！')])
     remember_me = BooleanField('Keep me logged in')
     submit = SubmitField('Log In')
     
