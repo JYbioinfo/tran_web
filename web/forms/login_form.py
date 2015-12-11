@@ -10,7 +10,7 @@ from wtforms import ValidationError
 class LoginForm(Form):
     account = StringField("account", validators=[DataRequired(message=u'用户名不能为空！'), Length(4, 20, message=u'用户名长度必须是4-20位！')])
     passwd = PasswordField("password", validators=[DataRequired(message=u'密码不正确！'), Length(5, 16, message=u'密码长度为5-16位！')])
-    remember_me = BooleanField('Keep me logged in')
-    submit = SubmitField('Log In')
+    remember_me = BooleanField(u'Keep me logged in')
+    submit = SubmitField(u'登陆')
     
 
