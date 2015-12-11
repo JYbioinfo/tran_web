@@ -38,7 +38,7 @@ class User(UserMixin):
 
 @login_manager.user_loader
 def load_user(account):
-    db.execute("select role,password from sys_users where account='%s';" % account)
+    db.execute("select password from account_for_disease where account='%s';" % account)
     data = db.fetchone()
     if data is not None:
         user = User()
