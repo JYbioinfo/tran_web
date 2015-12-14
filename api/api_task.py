@@ -11,6 +11,7 @@ db = DB()
 def get_task_list():
     return json.dumps({"status":"hello world!"})
 
+
 def user_affirm(account, password):
     user_flag = 0
     check_sql = "SELECT * FROM account_for_disease WHERE account = '%s' AND password = '%s';" \
@@ -22,10 +23,29 @@ def user_affirm(account, password):
         user_flag = 0
     return user_flag
 
+
+@task_api.route("/user/check/", methods=["POST"])
+def check_user():
+    postdata = json.loads(request.data)
+    print postdata
+    account = postdata["account"]
+    password = postdata["password"]
+    user_flag = 0
+    check_sql = "SELECT * FROM account_for_disease WHERE account = '%s' AND password = '%s';" \
+                % (account, password)
+    re = db.execute(check_sql)
+    if re > 0:
+        user_flag = 1
+    else:
+        user_flag = 0
+    return json.dumps({"status": user_flag})
+
+
 @task_api.route("/tasks/list/",methods=["GET"])
 def task_list_get():
     try:
         postdata = json.loads(request.data)
+        print postdata
         account = postdata["account"]
         password = postdata["password"]
         if type(account) != str and type(account) != unicode and len(account) <= 0:
