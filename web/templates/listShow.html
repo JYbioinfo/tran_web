@@ -15,24 +15,22 @@
     <table class="table table-bordered table-hover">
       <tr>
         <th scope="row" width="15%">疾病编号：</th>
-        <td width="42%">疾病编号</td>
+        <td width="42%">{{info["sys_no"]}}</td>
         <td width="42%"><input class="form-control" name="" type="text" /></td>
       </tr>
       <tr>
         <th scope="row">疾病名称：</th>
-        <td>{{detail_dic["disease_name"]}}</td>
-        <td><textarea class="form-control" id="name_zh" name="" cols="" rows="">中文疾病名称</textarea></td>
+        <td>{{info["disease_name"]}}</td>
+        <td><textarea class="form-control" name="" cols="" rows="">中文疾病名称</textarea></td>
       </tr>
       <tr>
         <th scope="row">疾病描述：</th>
-        <td>{{detail_dic["text"]}}</td>
-        <td><textarea class="form-control" id="text_zh" name="" cols="" rows="">中文疾病描述</textarea></td>
+        <td>{{info["text"]}}</td>
+        <td><textarea class="form-control" name="" cols="" rows="">中文疾病描述</textarea></td>
       </tr>
       <tr>
-        <td class="translate-btn" colspan="3" scope="row" >
-          <button type="button" class="btn btn-info" onclick="save()">保存</button>
-          <button type="button" class="btn btn-success">提交</button>
-        </td>
+        <td class="translate-btn" colspan="3" scope="row" ><button type="submit" class="btn btn-info" onclick="copyText">保存</button>
+          <button type="submit" class="btn btn-success" onclick="location.href='list'" >提交</button></td>
       </tr>
     </table>
   </div>
