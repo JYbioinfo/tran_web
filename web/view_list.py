@@ -22,19 +22,23 @@ def hello():
 def login():
     # return redirect(request.args.get("next") or "/tasks")
     form = LoginForm()
-    print request.method
     if form.validate_on_submit():
         # login and validate the user...
-        print current_user.passwd_enc
+        account = unicode.encode(form.account.data.decode())
         pw = HmacPasswd(form.passwd.data).get_hmacpassed()
-        print pw
-        if current_user.passwd_enc == pw:
-            if form.remember_me.data:
-                login_user(current_user, remember=True)
-            else:
-                login_user(current_user)
-            flash(u"Logged in successfully.")
-            return redirect(request.args.get("next") or "/tasks")
+        r = requests.post(API_service+"/api/user/check/", data=json.dumps({"account": account, "password": pw}))
+        if r.status_code /100 == 2:
+            res = json.loads(r.text)
+            if res["status"] == 1:
+                user = User()
+                user.account = account
+                user.passwd_enc = pw
+                if form.remember_me.data:
+                    login_user(user, remember=True)
+                else:
+                    login_user(user)
+                flash(u"Logged in successfully.")
+                return redirect(request.args.get("next") or "/tasks")
     return render_template(login_html, form=form)
 
 
@@ -47,11 +51,10 @@ def logout():
 @list_view.route("/tasks", methods=["GET", "PUT"])
 @login_required
 def get_task_list():
-    request_data = json.loads(request.data)
-    account = request_data["account"]
-    passwd = request_data["passwd"]
-    data = json.dumps({"account":account,"passwd":passwd})
-    result = json.loads(requests.get(API_service+"/tasks/", data=data))
+    account = current_user.account
+    passwd = current_user.passwd_enc
+    data = json.dumps({"account":account,"password":passwd})
+    result = json.loads(requests.get(API_service+"/api/tasks/list/", data=data).text)
     task_list = []
     for item in result:
         task_list.append(item)
@@ -60,12 +63,11 @@ def get_task_list():
 
 @list_view.route("/tasks/<task_no>", methods=["GET", "PUT"])
 @login_required
-def get_task_detail():
-    request_data = json.loads(request.data)
-    account = request_data["account"]
-    passwd = request_data["passwd"]
+def get_task_detail(task_no):
+    account = current_user.account
+    passwd = current_user.passwd_enc
     data = json.dumps({"account": account, "passwd": passwd})
-    result = json.loads(requests.get(API_service+"/tasks/", data=data))
+    result = json.loads(requests.get(API_service+"/api/tasks/%s/" % task_no, data=data))
     task_list = []
     for item in result:
         print item

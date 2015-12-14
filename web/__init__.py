@@ -38,7 +38,6 @@ class User(UserMixin):
 
 @login_manager.user_loader
 def load_user(account):
-    print "load user"
     db.execute("select password from account_for_disease where account='%s';" % account)
     data = db.fetchone()
     if data is not None:

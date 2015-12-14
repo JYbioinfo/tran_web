@@ -35,7 +35,7 @@ def hello():
     return "HELLO"
 
 from api_task import task_api
-app.register_blueprint(task_api, url_prefix='/api/task')
+app.register_blueprint(task_api, url_prefix='/api')
 
 
 @app.before_request
