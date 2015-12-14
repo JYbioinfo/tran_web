@@ -11,7 +11,6 @@ list_view = Blueprint("list_view", __name__)
 listShow_html = "listShow.html"
 list_html = "list.html"
 login_html = "sign.html"
-detail_html = "listShow.html"
 
 
 
@@ -50,50 +49,42 @@ def logout():
     return redirect("/login")
 
 
-@list_view.route("/tasks/list/", methods=["GET", "PUT"])
-# @login_required
+@list_view.route("/tasks", methods=["GET", "PUT"])
+@login_required
 def get_task_list():
-    # request_data = json.loads(request.data)
-    # account = request_data["account"]
-    # passwd = request_data["passwd"]
-    # data = json.dumps({"account":account,"passwd":passwd})
-    post_data = json.dumps({"account":"yangrui",
-                        "password":"6320f9d341d76ae9c6bfda5f7b53471f74b0ce87d536f90a2c73f1fe78657f6f"})
-    result = requests.get("http://127.0.0.1:7777/api/task/tasks/list/",data = post_data)
-    print post_data
-    info = json.loads(result.text)["data"]
-    print info
-    # result = json.loads(requests.get("http://127.0.0.1:7777/api/task/tasks/list/",data = post_data))
-    print post_data
-    # result = json.loads(requests.get(API_service+"/tasks/list/", data=post_data))
+    account = current_user.account
+    pw = current_user.passwd_enc
+    data = json.dumps({"account": account, "password": pw})
+    result = json.loads(requests.get(API_service+"/api/tasks/list/", data=data).text)
     task_list = []
-    # print result
-    for item in info:
+    for item in result["data"]:
         task_list.append(item)
-    print task_list
     return render_template(list_html, task_list=task_list)
 
 
 @list_view.route("/tasks/<int:sys_no>", methods=["GET", "PUT"])
-# @login_required
+@login_required
 def get_task_detail(sys_no):
-    # request_data = json.loads(request.data)
-    # account = request_data["account"]
-    # passwd = request_data["passwd"]
-    # data = json.dumps({"account": account, "passwd": passwd})
-    post_data = json.dumps({"account":"yangrui",
-                        "password":"6320f9d341d76ae9c6bfda5f7b53471f74b0ce87d536f90a2c73f1fe78657f6f"})
-    result = requests.get("http://127.0.0.1:7777/api/task/tasks/%d/" % sys_no,data = post_data)
-    info = json.loads(result.text)["data"]
-    print info
-    # result = json.loads(requests.get(API_service+"/tasks/sys_no/", data=data))
-    info_list = []
-    # for item in result:
-    #     task_list.append(item)
-
-    #---------------------------------------
-    # for item in info.keys():
-    #     info_list.append(info[item])
-    # print info_list
+    account = current_user.account
+    pw = current_user.passwd_enc
+    data = json.dumps({"account": account, "password": pw})
+    result = json.loads(requests.get(API_service+"/api/tasks/%d/" % sys_no, data=data).text)
+    info = result["data"]
     return render_template(listShow_html, info=info)
+
+
+@list_view.route("/tasks/<int:sys_no>/update", methods=["PUT", "POST"])
+@login_required
+def save_detail(sys_no):
+    postdata = {}
+    postdata["account"] = current_user.account
+    postdata["password"] = current_user.passwd_enc
+    r = json.loads(request.data)
+    for k,v in r.items():
+        postdata[k] = v
+    postdata["flag"] = 0
+    result = json.loads(requests.get(API_service+"/api/tasks/%d/" % sys_no, data=json.dumps(postdata)).text)
+    return redirect("/tasks/%d" % sys_no)
+
+
 
