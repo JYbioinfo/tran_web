@@ -57,7 +57,7 @@
                 <td>{{item["sys_no"]}}</td>
                 <td>{{item["disease_name"]}}</td>>
                 <td>{{item["disease_name_zn"]}}</td>>
-                <td><a href="127.0.0.1:5000/tasks/1"  title="">查看详情</a></td>
+                <td><a href="/tasks/{{ item['sys_no'] }}" title="">查看详情</a></td>
           </tr>
           {%endfor%}
         </table>
