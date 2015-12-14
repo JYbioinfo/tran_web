@@ -11,7 +11,6 @@ list_view = Blueprint("list_view", __name__)
 listShow_html = "listShow.html"
 list_html = "list.html"
 login_html = "sign.html"
-detail_html = "listShow.html"
 
 
 
@@ -51,7 +50,7 @@ def logout():
 
 
 @list_view.route("/tasks", methods=["GET", "PUT"])
-# @login_required
+@login_required
 def get_task_list():
     account = current_user.account
     pw = current_user.passwd_enc
@@ -64,7 +63,7 @@ def get_task_list():
 
 
 @list_view.route("/tasks/<int:sys_no>", methods=["GET", "PUT"])
-# @login_required
+@login_required
 def get_task_detail(sys_no):
     account = current_user.account
     pw = current_user.passwd_enc
@@ -72,4 +71,20 @@ def get_task_detail(sys_no):
     result = json.loads(requests.get(API_service+"/api/tasks/%d/" % sys_no, data=data).text)
     info = result["data"]
     return render_template(listShow_html, info=info)
+
+
+@list_view.route("/tasks/<int:sys_no>/update", methods=["PUT", "POST"])
+@login_required
+def save_detail(sys_no):
+    postdata = {}
+    postdata["account"] = current_user.account
+    postdata["password"] = current_user.passwd_enc
+    r = json.loads(request.data)
+    for k,v in r.items():
+        postdata[k] = v
+    postdata["flag"] = 0
+    result = json.loads(requests.get(API_service+"/api/tasks/%d/" % sys_no, data=json.dumps(postdata)).text)
+    return redirect("/tasks/%d" % sys_no)
+
+
 
