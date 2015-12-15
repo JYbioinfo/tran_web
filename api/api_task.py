@@ -27,7 +27,6 @@ def user_affirm(account, password):
 @task_api.route("/user/check/", methods=["POST"])
 def check_user():
     postdata = json.loads(request.data)
-    print postdata
     account = postdata["account"]
     password = postdata["password"]
     user_flag = 0
@@ -45,7 +44,6 @@ def check_user():
 def task_list_get():
     try:
         postdata = json.loads(request.data)
-        print postdata
         account = postdata["account"]
         password = postdata["password"]
         if type(account) != str and type(account) != unicode and len(account) <= 0:

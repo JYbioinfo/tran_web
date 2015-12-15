@@ -79,12 +79,14 @@ def save_detail(sys_no):
     postdata = {}
     postdata["account"] = current_user.account
     postdata["password"] = current_user.passwd_enc
-    r = json.loads(request.data)
-    for k,v in r.items():
-        postdata[k] = v
-    postdata["flag"] = 0
-    result = json.loads(requests.get(API_service+"/api/tasks/%d/" % sys_no, data=json.dumps(postdata)).text)
-    return redirect("/tasks/%d" % sys_no)
-
+    postdata["disease_name_zn"] = request.form.get("disease_name_zn", "")
+    postdata["text_zn"] = request.form.get("text_zn", "")
+    postdata["flag"] = int(request.form.get("flag", 0))
+    result = json.loads(requests.put(API_service+"/api/tasks/%d/" % sys_no, data=json.dumps(postdata)).text)
+    if result["status"] == u'success!':
+        if postdata["flag"] == 0:
+            return redirect("/tasks/%d" % sys_no)
+        else:
+            return redirect("/tasks")
 
 
