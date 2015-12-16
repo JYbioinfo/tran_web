@@ -22,6 +22,8 @@ Usage:
      db.fetchall()
      :return same as MySQLdb
 """
+
+sys.path.append(r'..')
 my_os = platform.platform().split('-')[0]
 if my_os == "Windows":
     pass
@@ -32,7 +34,7 @@ else:
 
 # read config
 config = ConfigParser.ConfigParser()
-config.read("./config.conf")
+config.read("../config.conf")
 
 env = config.get("Env", "env")
 

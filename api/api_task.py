@@ -3,8 +3,46 @@
 import json
 from flask import Blueprint, request
 from tools.Mysql_db import DB
+from tools import insertpasswd as PWD
 task_api = Blueprint("task_api",__name__)
-db = DB()
+db = None
+try:
+    db = DB()
+    db.connect()
+except Exception, e:
+    print e
+
+
+@task_api.route('/hmacpasswd/', methods=['POST'])
+def get_hmacpasswd():
+    try:
+        postdata = json.loads(request.data)
+        hmacp = PWD.HmacPasswd(postdata["passwd"])
+        print hmacp
+        return hmacp
+    except Exception, e:
+        print e.args
+        return json.dumps({"status": 702, "message": e.args})
+
+
+@task_api.route('/userconfirm/', methods=['POST'])
+def user_confirm():
+    try:
+        postdata = json.loads(request.data)
+        account = postdata["account"]
+        passwd = postdata["passwd"]
+        sql = "SELECT password FROM account_for_disease WHERE account='%s';" % account
+        result = db.execute(sql)
+        if result == 0:
+            return json.dumps({"status": 102, "message": "Account Not Exist!"})
+        re_det_pro = db.fetchall()
+        password = re_det_pro[0][0]
+        print password
+        if password != passwd:
+            return json.dumps({"status": 102, "message": "Password Error!"})
+        return json.dumps({"status": 002, "message": "User confirmed"})
+    except Exception, e:
+        return json.dumps({"status": 703, "message": e.args})
 
 
 @task_api.route("/tasks/",methods=["GET"])

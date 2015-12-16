@@ -3,9 +3,9 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>结果列表页</title>
-<link rel="stylesheet" href="css/bootstrap.min.css"><!-- 新 Bootstrap 核心 CSS 文件 -->
-<link rel="stylesheet" href="css/bootstrap-theme.min.css"><!-- 可选的Bootstrap主题文件（一般不用引入） -->
-<link rel="stylesheet" href="css/main.css"><!-- css主文件 -->
+<link rel="stylesheet" href="{{url_for('static',filename='css/bootstrap.min.css')}}"><!-- 新 Bootstrap 核心 CSS 文件 -->
+<link rel="stylesheet" href="{{url_for('static',filename='css/bootstrap-theme.min.css')}}"><!-- 可选的Bootstrap主题文件（一般不用引入） -->
+<link rel="stylesheet" href="{{url_for('static',filename='css/main.css')}}"><!-- css主文件 -->
 </head>
 
 <body>
@@ -16,31 +16,31 @@
       <li class="active"><a href="#home" data-toggle="tab">已翻译完成部分</a></li>
       <li><a href="#ios" data-toggle="tab">未翻译部分</a></li>
     </ul>
-    <div id="myTabContent" class="tab-content">
-      <!-- 已翻译完成部分 start -->
-      <div class="tab-pane fade in active top10" id="home">
-        <table class="table table-bordered table-hover">
-          <tr>
-            <th scope="col">疾病编号</th>
-            <th scope="col">疾病名称</th>
-            <th scope="col">疾病描述</th>
-            <th scope="col">状态查看</th>
-          </tr>
-          <tr>
-            <td>编号1</td>
-            <td>名称1</td>
-            <td>描述1</td>
-            <td><a href="" title="">查看详情</a></td>
-          </tr>
-          <tr>
-            <td>编号2</td>
-            <td>名称2</td>
-            <td>描述2</td>
-            <td><a href="" title="">查看详情</a></td>
-          </tr>
-        </table>
-      </div>
-      <!-- 已翻译完成部分 end -->
+    <!--<div id="myTabContent" class="tab-content">-->
+      <!--&lt;!&ndash; 已翻译完成部分 start &ndash;&gt;-->
+      <!--<div class="tab-pane fade in active top10" id="home">-->
+        <!--<table class="table table-bordered table-hover">-->
+          <!--<tr>-->
+            <!--<th scope="col">疾病编号</th>-->
+            <!--<th scope="col">疾病名称</th>-->
+            <!--<th scope="col">疾病描述</th>-->
+            <!--<th scope="col">状态查看</th>-->
+          <!--</tr>-->
+          <!--<tr>-->
+            <!--<td>编号1{{task_list[0]["disease_id"]}}</td>-->
+            <!--<td>名称1{{task_list[0]["disease_name"]}}</td>-->
+            <!--<td>描述1{{task_list[0]["disease_name_zn"]}}</td>-->
+            <!--<td><a href="" title="">查看详情</a></td>-->
+          <!--</tr>-->
+          <!--<tr>-->
+            <!--<td>编号2</td>-->
+            <!--<td>名称2</td>-->
+            <!--<td>描述2</td>-->
+            <!--<td><a href="" title="">查看详情</a></td>-->
+          <!--</tr>-->
+        <!--</table>-->
+      <!--</div>-->
+      <!--&lt;!&ndash; 已翻译完成部分 end &ndash;&gt;-->
 
       <!-- 未翻译部分 start -->
       <div class="tab-pane fade top10" id="ios">
@@ -51,18 +51,15 @@
             <th scope="col">疾病描述</th>
             <th scope="col">状态查看</th>
           </tr>
-          <tr>
-            <td>编号1</td>
-            <td>名称1</td>
-            <td>描述1</td>
-            <td><a href="" title="">查看详情</a></td>
+
+          {%for item in task_list%}
+          <tr align="center" bgcolor="#7fffd4" border="1" cellpadding="10">
+                <td>{{item["sys_no"]}}</td>
+                <td>{{item["disease_name"]}}</td>>
+                <td>{{item["disease_name_zn"]}}</td>>
+                <td><a href="/tasks/{{ item['sys_no'] }}" title="">查看详情</a></td>
           </tr>
-          <tr>
-            <td>编号2</td>
-            <td>名称2</td>
-            <td>描述2</td>
-            <td><a href="" title="">查看详情</a></td>
-          </tr>
+          {%endfor%}
         </table>
       </div>
       <!-- 未翻译部分 end -->
@@ -70,7 +67,7 @@
   </div>
 </div>
 <!-- 结果列表页 end -->
-<script src="js/jquery.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
+<script src="{{url_for('static',filename='js/jquery.min.js')}}"></script>
+<script src="{{url_for('static',filename='js/bootstrap.min.js')}}"></script>
 </body>
 </html>

@@ -3,9 +3,9 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>翻译页</title>
-<link rel="stylesheet" href="css/bootstrap.min.css"><!-- 新 Bootstrap 核心 CSS 文件 -->
-<link rel="stylesheet" href="css/bootstrap-theme.min.css"><!-- 可选的Bootstrap主题文件（一般不用引入） -->
-<link rel="stylesheet" href="css/main.css"><!-- css主文件 -->
+<link rel="stylesheet" href="{{url_for('static',filename='css/bootstrap.min.css')}}"><!-- 新 Bootstrap 核心 CSS 文件 -->
+<link rel="stylesheet" href="{{url_for('static',filename='css/bootstrap-theme.min.css')}}"><!-- 可选的Bootstrap主题文件（一般不用引入） -->
+<link rel="stylesheet" href="{{url_for('static',filename='css/main.css')}}"><!-- css主文件 -->
 </head>
 
 <body>
@@ -15,26 +15,27 @@
     <table class="table table-bordered table-hover">
       <tr>
         <th scope="row" width="15%">疾病编号：</th>
-        <td width="42%">疾病编号</td>
+        <td width="42%">{{info["sys_no"]}}</td>
         <td width="42%"><input class="form-control" name="" type="text" /></td>
       </tr>
       <tr>
         <th scope="row">疾病名称：</th>
-        <td>英文疾病名称skdjfksdjf</td>
+        <td>{{info["disease_name"]}}</td>
         <td><textarea class="form-control" name="" cols="" rows="">中文疾病名称</textarea></td>
       </tr>
       <tr>
         <th scope="row">疾病描述：</th>
-        <td>英文描述ssjkfkdfjksjfk</td>
+        <td>{{info["text"]}}</td>
         <td><textarea class="form-control" name="" cols="" rows="">中文疾病描述</textarea></td>
       </tr>
       <tr>
-        <td class="translate-btn" colspan="3" scope="row" ><button type="button" class="btn btn-info">保存</button>
-          <button type="button" class="btn btn-success">提交</button></td>
+        <td class="translate-btn" colspan="3" scope="row" ><button type="submit" class="btn btn-info" onclick="copyText">保存</button>
+          <button type="submit" class="btn btn-success" onclick="location.href='list'" >提交</button></td>
       </tr>
     </table>
   </div>
 </div>
 <!-- 翻译页 end -->
+<script src="{{url_for('static',filename='js/taskdetail.js')}}"></script>
 </body>
 </html>

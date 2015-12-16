@@ -8,6 +8,7 @@ from tools.Mysql_db import DB
 from flask import Flask
 from flask.ext.login import LoginManager, UserMixin
 from flask_wtf.csrf import CsrfProtect
+from werkzeug.security import generate_password_hash, check_password_hash
 
 # read config
 config = ConfigParser.ConfigParser()
@@ -17,6 +18,7 @@ env = config.get("Env", "env")
 web_listen_ip = config.get(env, "web_listen_ip")
 web_port = config.get(env, "web_port")
 API_service = "http://%s:%s" % (config.get(env, "api_host"), config.get(env, "api_port"))
+#auth_url = "http://%s:%s" % (config.get(env, "service_host"), config.get(env, "auth_port"))
 
 login_manager = LoginManager()
 csrf = CsrfProtect()
@@ -43,7 +45,7 @@ def load_user(account):
     if data is not None:
         user = User()
         user.account = account
-        user.passwd_enc = data[1]
+        user.passwd_enc = data[0]
         return user
     return None
 

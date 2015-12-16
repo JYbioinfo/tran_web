@@ -1,10 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends "base.html" %}
+{% block title %}Welcom{% endblock %}
+{% block page_content %}
+    <div class="page-header">
+    <h1>
+        Hello,
+        {% if current_user.account %}
+            {{ current_user.account }}
+        {% else %}
+            Stranger
+        {% endif %}!
+    </h1>
+    </div>
+{% endblock %}

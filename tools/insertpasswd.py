@@ -9,15 +9,23 @@ from Mysql_db import DB
 import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
-db = DB()
+
+db = None
+try:
+    db = DB()
+    db.connect()
+except Exception, e:
+    print e
+
 
 def HmacPasswd(passwd):
-    salt = "yangrui"
+    salt = "secmsg"
     if isinstance(passwd, unicode):
         passwd = passwd.encode('UTF-8')
     for i in xrange(11):
         HmacPassword = HMAC(passwd, salt, sha256).digest()
     return binascii.b2a_hex(HmacPassword)
+
 
 def inser_into_passwd():
     account = "yangrui"
@@ -36,6 +44,7 @@ def test():
     data = db.fetchall()
     print data
     hmacPasswd = HmacPasswd(passwd)
+    print hmacPasswd
     if hmacPasswd == data[0][0]:
         print 'ok'
 
