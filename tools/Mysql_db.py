@@ -1,4 +1,4 @@
-# encoding: utf-8
+ # encoding: utf-8
 
 
 import MySQLdb
@@ -32,7 +32,7 @@ else:
 
 # read config
 config = ConfigParser.ConfigParser()
-config.read("../config.conf")
+config.read("./config.conf")
 
 env = config.get("Env", "env")
 
