@@ -20,14 +20,14 @@ except Exception, e:
     print e
 
 
-# @list_view.errorhandler(404)
-# def page_not_found(e):
-#     return render_template('404.html'), 404
-#
-#
-# @list_view.errorhandler(500)
-# def internal_server_error(e):
-#     return render_template('500.html'), 500
+@list_view.app_errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
+
+@list_view.app_errorhandler(500)
+def internal_server_error(e):
+    return render_template('500.html'), 500
 
 
 @list_view.route("/", methods=["GET", "PUT"])
@@ -102,7 +102,7 @@ def get_task_list():
     return render_template(list_html, task_list=task_list)
 
 
-@list_view.route("/api/task/tasks/<task_no>/", methods=["GET", "PUT"])
+@list_view.route("/tasks/<task_no>/", methods=["GET", "PUT"])
 @login_required
 def get_task_detail():
     request_data = json.loads(request.data)
