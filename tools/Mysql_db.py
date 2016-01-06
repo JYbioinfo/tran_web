@@ -62,19 +62,19 @@ class DB(object):
     def connect(self):
         logging.info(time.ctime() + " : connect to mysql server..")
         if self.readonly is False:
-            sql_user = 'gpo'
-            sql_passwd = "btlc123"
+            sql_user = 'traner'
+            sql_passwd = "genetraner"
         else:
-            sql_user = "gener"
-            sql_passwd = "gene_ac252"
+            sql_user = "traner"
+            sql_passwd = "genetraner"
         if self._sock_file != '':
             self.conn = MySQLdb.connect(host=self.host, port=3306, user=sql_user,
-                                        passwd='btlc123', db='test', charset='utf8',
+                                        passwd='genetraner', db='tran_web', charset='utf8',
                                         unix_socket=self._sock_file)
             self.cursor = self.conn.cursor()
         else:
             self.conn = MySQLdb.connect(host=self.host, port=3306, user=sql_user,
-                                        passwd=sql_passwd, db='test', charset='utf8')
+                                        passwd=sql_passwd, db='tran_web', charset='utf8')
             self.cursor = self.conn.cursor()
         # self.conn = MySQLdb.connect(host='localhost', port=3306, user='root',
         #                             passwd='root1256', db='clinic', charset='utf8')
