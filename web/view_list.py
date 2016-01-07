@@ -1,3 +1,4 @@
+#! /usr/bin/env python
 # -*- coding: utf-8 -*-
 # Create Date 2015/12/10
 __author__ = 'wubo'

@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 import sys
+sys.path.append(r'..')
 import ConfigParser
 import json
 from platform import system
@@ -14,6 +15,7 @@ config = ConfigParser.ConfigParser()
 config.read("../config.conf")
 
 env = config.get("Env", "env")
+remote_mysql_host = config.get(env, "remote_mysql_host")
 web_listen_ip = config.get(env, "web_listen_ip")
 web_port = config.get(env, "web_port")
 API_service = "http://%s:%s" % (config.get(env, "api_host"), config.get(env, "api_port"))
