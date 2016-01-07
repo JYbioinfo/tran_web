@@ -10,3 +10,6 @@ from api import api_listen_ip, api_port, env, app
 if env != "Production" and env != "Test":
     if __name__ == '__main__':
         app.run(host=api_listen_ip, port=api_port)
+
+# if __name__ == '__main__':
+#     app.run(host=api_listen_ip, port=api_port)
