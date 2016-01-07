@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # Create Date 2015/12/10
 __author__ = 'wubo'
-import requests,json
+import requests,json,urllib
 from tools.hmac_passwd import HmacPasswd
 from flask import Blueprint, render_template, redirect, request, url_for
 from web import API_service,User
@@ -35,6 +35,7 @@ def login():
                 user = User()
                 user.account = account
                 user.passwd_enc = pw
+                user.role = 1
                 if form.remember_me.data:
                     login_user(user, remember=True)
                 else:
@@ -45,6 +46,7 @@ def login():
 
 
 @list_view.route("/logout")
+@login_required
 def logout():
     logout_user()
     return redirect("/login")
@@ -68,12 +70,35 @@ def get_task_list():
 def get_task_detail(sys_no):
     account = current_user.account
     pw = current_user.passwd_enc
+    role = 0
     data = json.dumps({"account": account, "password": pw})
     result = json.loads(requests.get(API_service+"/api/tasks/%d/" % sys_no, data=data).text)
     info = result["data"]
-    return render_template(listShow_html, info=info)
+    # 若数据库中为空则调用百度翻译api
+    url_pre = r"http://openapi.baidu.com/public/2.0/bmt/translate?client_id=etqIM7JLcDUwNR2sokHu&q="
+    if info["disease_name_zn"] != "NA":
+        quoteName = urllib.quote(info["disease_name"])
+        name_url = url_pre+quoteName+"&from=auto&to=zh"
+        nameDic = json.loads(requests.get(name_url).text)
+        name_baidu = u"百度翻译结果，仅供参考:\n"
+        print nameDic
+        for line in nameDic["trans_result"]:
+            name_baidu = name_baidu+line["dst"]+"\n"
+        info["disease_name_zn"] = name_baidu
+    if info["text_zn"] != "NA":
+        quoteName = urllib.quote(info["text"])
+        text_url = url_pre+quoteName+"&from=auto&to=zh"
+        textDic = json.loads(requests.get(text_url).text)
+        text_baidu = u"百度翻译结果，仅供参考:\n"
+        print textDic
+        if "trans_result" in textDic:
+            for line in textDic["trans_result"]:
+                text_baidu = text_baidu+line["dst"]+"\n"
+            info["dtext_zn"] = name_baidu
+    return render_template(listShow_html, info=info, role=role)
 
 
+# -------------------------------数据处理界面-----------------------------------
 @list_view.route("/tasks/<int:sys_no>/update", methods=["PUT", "POST"])
 @login_required
 def save_detail(sys_no):
@@ -89,5 +114,21 @@ def save_detail(sys_no):
             return redirect("/tasks/%d" % sys_no)
         else:
             return redirect("/tasks")
+
+
+@list_view.route("/tasks/<int:sys_no>/mark", methods=["PUT", "POST"])
+@login_required
+def tran_mark(sys_no):
+    postdata = {}
+    postdata["account"] = current_user.account
+    postdata["password"] = current_user.passwd_enc
+    postdata["mark"] = request.form.get("mark", "0")
+    result = json.loads(requests.put(API_service+"/api/tasks/%d/" % sys_no, data=json.dumps(postdata)).text)
+    if result["status"] == u'success!':
+        if postdata["flag"] == 0:
+            return redirect("/tasks/%d" % sys_no)
+        else:
+            return redirect("/tasks")
+
 
 
