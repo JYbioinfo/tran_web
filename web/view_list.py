@@ -134,7 +134,6 @@ def save_detail(sys_no):
     postdata["text_zn"] = request.form.get("text_zn", "")
     postdata["flag"] = int(request.form.get("flag", 2))
     result = json.loads(requests.put(API_service+"/api/tasks/%d/" % sys_no, data=json.dumps(postdata)).text)
-    print result
     if result["status"] == 1:
         if postdata["flag"] == 2:
             return redirect("/tasks/%d" % sys_no)
