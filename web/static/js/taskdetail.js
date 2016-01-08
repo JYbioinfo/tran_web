@@ -1,5 +1,5 @@
 /**
- * Created by guhongjie on 2015/12/14.
+ * Created by wubo on 2015/12/14.
  */
 function update(flag, sys_no) {
     name_zh = document.getElementById("name_zh").value;
@@ -45,4 +45,8 @@ function mark(sys_no) {
     newElement.setAttribute("value", selval);
     turnForm.appendChild(newElement);
     turnForm.submit();
+}
+
+function logout() {
+
 }
