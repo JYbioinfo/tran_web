@@ -26,14 +26,14 @@
             <div class="tab-pane fade top10" id="home">
                 <table class="table table-bordered table-hover">
                     <tr>
-                        <th scope="col">系统编号</th>
+                        <th scope="col">疾病编号</th>
                         <th scope="col">疾病名称</th>
                         <th scope="col">录入者</th>
                         <th scope="col">状态</th>
                     </tr>
                     {%for item in submit_list%}
                     <tr align="center" border="1" cellpadding="10">
-                        <td>{{item["sys_no"]}}</td>
+                        <td>{{item["disease_id"]}}</td>
                         <td>{{ item["disease_name"] }}</td>
                         <td>{{ item["account"] }}</td>
                         <td><a href="/tasks/{{ item['sys_no'] }}" title="">查看详情</a></td>
@@ -46,14 +46,14 @@
             <div class="tab-pane fade in active top10" id="mark">
                 <table class="table table-bordered table-hover">
                     <tr>
-                        <th scope="col">系统编号</th>
+                        <th scope="col">疾病编号</th>
                         <th scope="col">疾病名称</th>
                         <th scope="col">录入者</th>
                         <th scope="col">状态查看</th>
                     </tr>
                     {%for item in marked_list%}
                     <tr align="center" border="1" cellpadding="10">
-                        <td>{{item["sys_no"]}}</td>
+                        <td>{{item["disease_id"]}}</td>
                         <td>{{ item["disease_name"] }}</td>
                         <td>{{ item["account"] }}</td>
                         <td><a href="/tasks/{{ item['sys_no'] }}" title="">{{item["sore"]}}</a></td>
