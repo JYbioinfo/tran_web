@@ -293,8 +293,9 @@ def task_list_get():
             account_no = len(result21)
             big_dict = {}
 
-            big_dict["pushed"] = []
-            big_dict["checked"] = []
+            big_dict["pushed"] = {}
+            big_dict["checked"] = {}
+            big_dict["user_right"] = user_right
             for account_item in result21:
                 user_no = account_item[0]
                 account = account_item[1]
@@ -317,7 +318,7 @@ def task_list_get():
                         account_dict["text_zn"] = text_zn
                         account_dict["sore"] = sore
                         account_list1.append(account_dict)
-                    big_dict["pushed"] = account_list1
+                    big_dict["pushed"][account] = account_list1
 
 
                 sql2 = "SELECT sys_no,disease_id,disease_name,disease_name_zn,text,text_zn," \
@@ -338,8 +339,7 @@ def task_list_get():
                         account_dict["text_zn"] = text_zn
                         account_dict["sore"] = sore
                         account_list2.append(account_dict2)
-                    big_dict["checked"] = account_list2
-                    big_dict["user_right"] = user_right
+                    big_dict["checked"][account] = account_list2
             return json.dumps({"status": "success!", "data":big_dict})
     except Exception,e:
         print str(e)
