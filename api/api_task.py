@@ -220,6 +220,8 @@ def task_list_get():
                     dict1["sys_no"] = sys_no
                     dict1["disease_id"] = disease_id
                     dict1["disease_name"] = disease_name
+                    if disease_name_zn is None:
+                        disease_name_zn = 'NA'
                     dict1["disease_name_zn"] = disease_name_zn
                     task_list1.append(dict1)
             # 不存在已占用的数据 取100未被占用的数据 并置为1 account,并返回已保存，已提交
@@ -237,6 +239,8 @@ def task_list_get():
                     dict2["sys_no"] = sys_no
                     dict2["disease_id"] = disease_id
                     dict2["disease_name"] = disease_name
+                    if disease_name_zn is None:
+                        disease_name_zn = 'NA'
                     dict2["disease_name_zn"] = disease_name_zn
                     # 置为占用状态
                     update_sql1 = "UPDATE disease_detail SET flag = 1,account = '%s' " \
@@ -258,6 +262,8 @@ def task_list_get():
                     dict3["sys_no"] = sys_no
                     dict3["disease_id"] = disease_id
                     dict3["disease_name"] = disease_name
+                    if disease_name_zn is None:
+                        disease_name_zn = 'NA'
                     dict3["disease_name_zn"] = disease_name_zn
                     task_list2.append(dict3)
             # 返回已提交的数据
@@ -274,6 +280,8 @@ def task_list_get():
                     dict5["sys_no"] = sys_no
                     dict5["disease_id"] = disease_id
                     dict5["disease_name"] = disease_name
+                    if disease_name_zn is None:
+                        disease_name_zn = 'NA'
                     dict5["disease_name_zn"] = disease_name_zn
                     task_list3.append(dict5)
             return json.dumps({"status": "success!",
