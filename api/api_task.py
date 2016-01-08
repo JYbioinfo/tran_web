@@ -232,7 +232,7 @@ def task_list_get():
                 if re2 > 0:
                     result2 = db.fetchall()
                 else:
-                    return json.dumps({"status":"not found flag=0 disease"})
+                    result2 = []
                 for item2 in result2:
                     dict2 = {}
                     sys_no,disease_id,disease_name,disease_name_zn = item2
