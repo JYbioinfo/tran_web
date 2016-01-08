@@ -29,7 +29,7 @@
                         <th scope="col">系统编号</th>
                         <th scope="col">疾病名称</th>
                         <th scope="col">录入者</th>
-                        <th scope="col">状态查看</th>
+                        <th scope="col">状态</th>
                     </tr>
                     {%for item in submit_list%}
                     <tr align="center" border="1" cellpadding="10">
@@ -56,7 +56,7 @@
                         <td>{{item["sys_no"]}}</td>
                         <td>{{ item["disease_name"] }}</td>
                         <td>{{ item["account"] }}</td>
-                        <td><a href="/tasks/{{ item['sys_no'] }}" title="">5</a></td>
+                        <td><a href="/tasks/{{ item['sys_no'] }}" title="">{{item["sore"]}}</a></td>
                     </tr>
                     {%endfor%}
                 </table>

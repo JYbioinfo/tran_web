@@ -64,13 +64,6 @@ def get_task_list():
         return redirect("/marks")
     data = json.dumps({"account": account, "password": pw})
     result = json.loads(requests.get(API_service+"/api/tasks/list/", data=data).text)
-    # task_list = []
-    # save_list = []
-    # submit_list = []
-    # for item in result["data"]:
-    #     task_list.append(item)
-    #     save_list.append(item)
-    # tasklist为已分配未翻译 save_list为已保存的
     return render_template(list_html, task_list=result["data"]["new_get"], save_list=result["data"]["saved"],
                            submit_list=result["data"]["commit"])
 
@@ -84,7 +77,6 @@ def get_mark_list():
         return redirect("/tasks")
     data = json.dumps({"account": account, "password": pw})
     result = json.loads(requests.get(API_service+"/api/tasks/list/", data=data).text)
-    print result
     marked_list = []
     submit_list = []
     for k,v in result["data"]["pushed"].items():
@@ -110,7 +102,7 @@ def get_task_detail(sys_no):
     info = result["data"]
     # 若数据库中为空则调用百度翻译api
     url_pre = r"http://openapi.baidu.com/public/2.0/bmt/translate?client_id=6XUk46Y3LySSNvDNnvdo7K4p&q="
-    if info["disease_name_zn"] != "NA":
+    if info["disease_name_zn"] == "NA":
         quoteName = urllib.quote(info["disease_name"])
         name_url = url_pre+quoteName+"&from=auto&to=zh"
         nameDic = json.loads(requests.get(name_url).text)
@@ -119,7 +111,7 @@ def get_task_detail(sys_no):
             for line in nameDic["trans_result"]:
                 name_baidu = name_baidu+line["dst"]+"\n"
             info["disease_name_zn"] = name_baidu
-    if info["text_zn"] != "NA":
+    if info["text_zn"] == "NA":
         quoteName = urllib.quote(info["text"])
         text_url = url_pre+quoteName+"&from=auto&to=zh"
         textDic = json.loads(requests.get(text_url).text)
@@ -140,10 +132,10 @@ def save_detail(sys_no):
     postdata["password"] = current_user.passwd_enc
     postdata["disease_name_zn"] = request.form.get("disease_name_zn", "")
     postdata["text_zn"] = request.form.get("text_zn", "")
-    postdata["flag"] = int(request.form.get("flag", 0))
+    postdata["flag"] = int(request.form.get("flag", 2))
     result = json.loads(requests.put(API_service+"/api/tasks/%d/" % sys_no, data=json.dumps(postdata)).text)
     if result["status"] == u'success!':
-        if postdata["flag"] == 0:
+        if postdata["flag"] == 2:
             return redirect("/tasks/%d" % sys_no)
         else:
             return redirect("/tasks")
@@ -155,13 +147,14 @@ def tran_mark(sys_no):
     postdata = {}
     postdata["account"] = current_user.account
     postdata["password"] = current_user.passwd_enc
-    postdata["mark"] = request.form.get("mark", "0")
+    postdata["flag"] = 4
+    postdata["score"] = request.form.get("mark", "0")
     result = json.loads(requests.put(API_service+"/api/tasks/%d/" % sys_no, data=json.dumps(postdata)).text)
     if result["status"] == u'success!':
         if postdata["flag"] == 0:
-            return redirect("/tasks/%d" % sys_no)
+            return redirect("/marks/%d" % sys_no)
         else:
-            return redirect("/tasks")
+            return redirect("/marks")
 
 
 

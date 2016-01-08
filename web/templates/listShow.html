@@ -25,17 +25,15 @@
             <tr>
                 <th scope="row" width="15%">疾病编号：</th>
                 <td width="42%">{{info["sys_no"]}}</td>
-                <td width="42%"><input class="form-control" name="" type="text"/></td>
+                <td width="42%">在编辑过程中请不要刷新页面，请及时保存</td>
             </tr>
             <tr>
                 <th scope="row">疾病名称：</th>
                 <td>{{info["disease_name"]}}</td>
-                {#
                 <td><textarea class="form-control" id="name_zh" name="" cols=""
                               rows="">{{info["disease_name_zn"]}}</textarea></td>
-                #}
-                <td><input class="form-control" id="name_zh" name="" type="text" value="{{info[" disease_name_zn"]}}" />
-                </td>
+                <!--<td><input class="form-control" id="name_zh" name="" type="text" value="{{info[" disease_name_zn"]}}" />-->
+                <!--</td>-->
             </tr>
             <tr>
                 <th scope="row">疾病描述：</th>
@@ -47,8 +45,8 @@
             <tr>
                 <td class="translate-btn" colspan="3" scope="row">
 
-                    <button class="btn btn-info" onclick="update(0,{{info['sys_no']}})">保存</button>
-                    <button class="btn btn-success" onclick="update(1,{{info['sys_no']}})">提交</button>
+                    <button class="btn btn-info" onclick="update(2,{{info['sys_no']}})">保存</button>
+                    <button class="btn btn-success" onclick="update(3,{{info['sys_no']}})">提交</button>
                 </td>
             </tr>
             {% else %}
@@ -62,7 +60,7 @@
                         <option>4</option>
                         <option>5</option>
                     </select>
-                    <button class="btn btn-success" onclick="mark()">确认</button>
+                    <button class="btn btn-success" onclick="mark({{info['sys_no']}})">确认</button>
                 </td>
             </tr>
             {% endif %}
