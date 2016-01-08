@@ -324,6 +324,7 @@ def task_list_get():
                 sql2 = "SELECT sys_no,disease_id,disease_name,disease_name_zn,text,text_zn," \
                        "score FROM disease_detail WHERE account = '%s' AND flag = '%s';" % \
                        (account, 4)
+                print sql2
                 res3 = db.execute(sql2)
                 if res3 > 0:
                     result23 = db.fetchall()
@@ -331,14 +332,15 @@ def task_list_get():
                     for commit_item2 in result23:
                         account_dict2 = {}
                         sys_no,disease_id,disease_name,disease_name_zn,text,text_zn,sore = commit_item2
-                        account_dict["sys_no"] = sys_no
-                        account_dict["disease_id"] = disease_id
-                        account_dict["disease_name"] = disease_name
-                        account_dict["disease_name_zn"] = disease_name_zn
-                        account_dict["text"] = text
-                        account_dict["text_zn"] = text_zn
-                        account_dict["sore"] = sore
+                        account_dict2["sys_no"] = sys_no
+                        account_dict2["disease_id"] = disease_id
+                        account_dict2["disease_name"] = disease_name
+                        account_dict2["disease_name_zn"] = disease_name_zn
+                        account_dict2["text"] = text
+                        account_dict2["text_zn"] = text_zn
+                        account_dict2["sore"] = sore
                         account_list2.append(account_dict2)
+                        print account_list2
                     big_dict["checked"][account] = account_list2
             return json.dumps({"status": "success!", "data":big_dict})
     except Exception,e:
