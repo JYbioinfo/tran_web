@@ -377,6 +377,19 @@ def disease_info_get(sys_no):
         else:
             return json.dumps({"status":"failed get disease info"})
 
+        if user_right == 1:
+            if disease_name_zn is None:
+                disease_name_zn = "NA"
+            if text_zn is None:
+                text_zn = "NA"
+        elif user_right == 0:
+            if disease_name_zn is None:
+                disease_name_zn = ""
+            if text_zn is None:
+                text_zn = ""
+        else:
+            return json.dumps({"status":"wrong right"})
+
         disease_info = {}
         disease_info["user_right"] = user_right
         disease_info["disease_id"] = disease_id
