@@ -360,6 +360,14 @@ def disease_info_get(sys_no):
         user_flag = user_affirm(account,password)
         if user_flag == 0:
             return json.dumps({"status":"user not exit"})
+        # 获得用户权限
+        right_check = "SELECT user_right FROM account_for_disease WHERE account = '%s';" % account
+        re1 = db.execute(right_check)
+        if re1 > 0:
+            user_right = db.fetchone()[0]
+        else:
+            return json.dumps({"status":"sys'account not exsit"})
+
         select_sql = "SELECT disease_id,disease_name,disease_name_zn,text,text_zn,flag,account,score " \
                      "FROM disease_detail WHERE sys_no = %d;" % sys_no
         re = db.execute(select_sql)
@@ -368,7 +376,9 @@ def disease_info_get(sys_no):
             disease_id,disease_name,disease_name_zn,text,text_zn,flag,account,score = result
         else:
             return json.dumps({"status":"failed get disease info"})
+
         disease_info = {}
+        disease_info["user_right"] = user_right
         disease_info["disease_id"] = disease_id
         disease_info["disease_name"] = disease_name
         disease_info["disease_name_zn"] = disease_name_zn
