@@ -30,14 +30,16 @@ def check_user():
     account = postdata["account"]
     password = postdata["password"]
     user_flag = 0
-    check_sql = "SELECT * FROM account_for_disease WHERE account = '%s' AND password = '%s';" \
+    check_sql = "SELECT user_right FROM account_for_disease WHERE account = '%s' AND password = '%s';" \
                 % (account, password)
     re = db.execute(check_sql)
     if re > 0:
+        user_right = db.fetchone()[0]
         user_flag = 1
     else:
         user_flag = 0
-    return json.dumps({"status": user_flag})
+        user_right = ''
+    return json.dumps({"status": user_flag, "user_flag":user_right})
 
 
 # @task_api.route("/tasks/list/",methods=["GET"])
@@ -196,20 +198,17 @@ def task_list_get():
 
         # 判断权限
         right_check = "SELECT user_right FROM account_for_disease WHERE account = '%s';" % account
-        print right_check
         re1 = db.execute(right_check)
         if re1 > 0:
             user_right = db.fetchone()[0]
         else:
             return json.dumps({"status":"sys'account not exsit"})
         # 录入员
-        print user_right
         if user_right == 1:
             # 判断是否有已占用的数据
             select_sql1 = "SELECT sys_no,disease_id,disease_name,disease_name_zn" \
                           " FROM disease_detail WHERE account = '%s' AND flag = '%s';" % \
                           (account, 1)
-            print select_sql1
             re2 = db.execute(select_sql1)
             # 存在已占用的数据 只返回已占用 已保存，已提交
             task_list1 = []
@@ -324,7 +323,6 @@ def task_list_get():
                 sql2 = "SELECT sys_no,disease_id,disease_name,disease_name_zn,text,text_zn," \
                        "score FROM disease_detail WHERE account = '%s' AND flag = '%s';" % \
                        (account, 4)
-                print sql2
                 res3 = db.execute(sql2)
                 if res3 > 0:
                     result23 = db.fetchall()
@@ -340,7 +338,6 @@ def task_list_get():
                         account_dict2["text_zn"] = text_zn
                         account_dict2["sore"] = sore
                         account_list2.append(account_dict2)
-                        print account_list2
                     big_dict["checked"][account] = account_list2
             return json.dumps({"status": "success!", "data":big_dict})
     except Exception,e:
@@ -442,7 +439,8 @@ def disease_info_update(sys_no):
             if re2 > 0:
                 return json.dumps({"status":"success!"})
             else:
-                return json.dumps({"status":"failed to update"})
+                return json.dumps({"status":"failed to update",
+                                   "data": {"user_right": user_right,"score":score,"flag":flag,"sys_no": sys_no}})
         # 录入员
         elif user_right == 1:
             if flag == 4:
@@ -454,7 +452,8 @@ def disease_info_update(sys_no):
                           (disease_name_zn,text_zn,flag,sys_no,account)
             re3 = db.execute(update_sql2)
             if re3 > 0:
-                return json.dumps({"status":"success!", "data": {"user_right": user_right}})
+                return json.dumps({"status":"success!", "data": {"user_right": user_right,
+                                                                 "flag":flag,"sys_no":sys_no,"text_zn":text_zn,"disease_name_zn":disease_name_zn}})
             else:
                 return json.dumps({"status":"failed to update"})
     except Exception,e:
