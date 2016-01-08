@@ -15,27 +15,24 @@
 <body>
 <!-- 结果列表页 start -->
 <div class="container">
-    <button class="btn btn-info" onclick="window.location=/tasks">返回列表</button>
-    <button class="btn btn-success" onclick="window.location=/logout">注销</button>
     <div class="list">
         <ul id="myTab" class="nav nav-tabs">
-            <li class="active"><a href="#home" data-toggle="tab">已保存</a></li>
-            <li><a href="#distr" data-toggle="tab">已分配未翻译</a></li>
-            <li><a href="#subm" data-toggle="tab">已提交</a></li>
+            <li class="active"><a href="#home" data-toggle="tab">待审核</a></li>
+            <li><a href="#mark" data-toggle="tab">已审核</a></li>
         </ul>
         <div id="myTabContent" class="tab-content">
-            <!--已保存部分 start -->
+            <!--已提交部分 start -->
             <div class="tab-pane fade top10" id="home">
                 <table class="table table-bordered table-hover">
                     <tr>
-                        <th scope="col">疾病编号</th>
+                        <th scope="col">系统编号</th>
                         <th scope="col">疾病名称</th>
                         <th scope="col">疾病描述</th>
                         <th scope="col">状态查看</th>
                     </tr>
-                    {%for item in task_list%}
+                    {%for item in submit_list%}
                     <tr align="center" border="1" cellpadding="10">
-                        <td>{{item["disease_id"]}}</td>
+                        <td>{{item["sys_no"]}}</td>
                         <td>{{ item["disease_name"] }}</td>
                         <td>{{ item["disease_name_zn"] }}</td>
                         <td><a href="/tasks/{{ item['sys_no'] }}" title="">查看详情</a></td>
@@ -43,53 +40,32 @@
                     {%endfor%}
                 </table>
             </div>
-            <!--已保存部分 end -->
-            <!-- 未翻译部分 start -->
-            <div class="tab-pane fade in active top10" id="distr">
+            <!--已提交部分 end -->
+            <!-- 已审核部分 start -->
+            <div class="tab-pane fade in active top10" id="mark">
                 <table class="table table-bordered table-hover">
                     <tr>
-                        <th scope="col">疾病编号</th>
+                        <th scope="col">系统编号</th>
                         <th scope="col">疾病名称</th>
                         <th scope="col">疾病描述</th>
                         <th scope="col">状态查看</th>
                     </tr>
-                    {%for item in task_list%}
+                    {%for item in marked_list%}
                     <tr align="center" border="1" cellpadding="10">
-                        <td>{{item["disease_id"]}}</td>
+                        <td>{{item["sys_no"]}}</td>
                         <td>{{ item["disease_name"] }}</td>
                         <td>{{ item["disease_name_zn"] }}</td>
-                        <td><a href="/tasks/{{ item['sys_no'] }}" title="">查看详情</a></td>
+                        <td><a href="/tasks/{{ item['sys_no'] }}" title="">5</a></td>
                     </tr>
                     {%endfor%}
                 </table>
             </div>
-            <!-- 未翻译部分 end -->
-            <!-- 已提交部分 start -->
-            <div class="tab-pane fade in active top10" id="subm">
-                <table class="table table-bordered table-hover">
-                    <tr>
-                        <th scope="col">疾病编号</th>
-                        <th scope="col">疾病名称</th>
-                        <th scope="col">疾病描述</th>
-                        <th scope="col">状态查看</th>
-                    </tr>
-                    {%for item in task_list%}
-                    <tr align="center" border="1" cellpadding="10">
-                        <td>{{item["disease_id"]}}</td>
-                        <td>{{ item["disease_name"] }}</td>
-                        <td>{{ item["disease_name_zn"] }}</td>
-                        <td><a href="/tasks/{{ item['sys_no'] }}" title="">查看详情</a></td>
-                    </tr>
-                    {%endfor%}
-                </table>
-            </div>
-            <!-- 已提交部分 end -->
+            <!-- 已审核部分 end -->
         </div>
     </div>
 </div>
 <!-- 结果列表页 end -->
 <script src="{{url_for('static',filename='js/jquery.min.js')}}"></script>
 <script src="{{url_for('static',filename='js/bootstrap.min.js')}}"></script>
-<script src="{{url_for('static',filename='js/tasklist.js')}}"></script>
 </body>
 </html>
