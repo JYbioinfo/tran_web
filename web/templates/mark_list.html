@@ -15,6 +15,7 @@
 <body>
 <!-- 结果列表页 start -->
 <div class="container">
+    <button class="btn btn-success" onclick="window.location.href='/logout'">注销</button>
     <div class="list">
         <ul id="myTab" class="nav nav-tabs">
             <li class="active"><a href="#home" data-toggle="tab">待审核</a></li>
@@ -27,14 +28,14 @@
                     <tr>
                         <th scope="col">系统编号</th>
                         <th scope="col">疾病名称</th>
-                        <th scope="col">疾病描述</th>
+                        <th scope="col">录入者</th>
                         <th scope="col">状态查看</th>
                     </tr>
                     {%for item in submit_list%}
                     <tr align="center" border="1" cellpadding="10">
                         <td>{{item["sys_no"]}}</td>
                         <td>{{ item["disease_name"] }}</td>
-                        <td>{{ item["disease_name_zn"] }}</td>
+                        <td>{{ item["account"] }}</td>
                         <td><a href="/tasks/{{ item['sys_no'] }}" title="">查看详情</a></td>
                     </tr>
                     {%endfor%}
@@ -47,14 +48,14 @@
                     <tr>
                         <th scope="col">系统编号</th>
                         <th scope="col">疾病名称</th>
-                        <th scope="col">疾病描述</th>
+                        <th scope="col">录入者</th>
                         <th scope="col">状态查看</th>
                     </tr>
                     {%for item in marked_list%}
                     <tr align="center" border="1" cellpadding="10">
                         <td>{{item["sys_no"]}}</td>
                         <td>{{ item["disease_name"] }}</td>
-                        <td>{{ item["disease_name_zn"] }}</td>
+                        <td>{{ item["account"] }}</td>
                         <td><a href="/tasks/{{ item['sys_no'] }}" title="">5</a></td>
                     </tr>
                     {%endfor%}

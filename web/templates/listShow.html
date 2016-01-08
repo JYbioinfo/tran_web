@@ -14,8 +14,12 @@
 <body>
 <!-- 翻译页 start -->
 <div class="container">
-    <button class="btn btn-info" onclick="window.location=/tasks">返回列表</button>
-    <button class="btn btn-success" onclick="window.location=/logout">注销</button>
+    {% if role == 1 %}
+    <button class="btn btn-info" onclick="window.location.href='/tasks'">返回列表</button>
+    {% else %}
+    <button class="btn btn-info" onclick="window.location.href='/marks'">返回列表</button>
+    {% endif %}
+    <button class="btn btn-success" onclick="window.location.href='/logout'">注销</button>
     <div class="translate bottom20">
         <table class="table table-bordered table-hover">
             <tr>

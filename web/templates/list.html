@@ -15,12 +15,11 @@
 <body>
 <!-- 结果列表页 start -->
 <div class="container">
-    <button class="btn btn-info" onclick="window.location=/tasks">返回列表</button>
-    <button class="btn btn-success" onclick="window.location=/logout">注销</button>
+    <button class="btn btn-success" onclick="window.location.href='/logout'">注销</button>
     <div class="list">
         <ul id="myTab" class="nav nav-tabs">
             <li class="active"><a href="#home" data-toggle="tab">已保存</a></li>
-            <li><a href="#distr" data-toggle="tab">已分配未翻译</a></li>
+            <li><a href="#distr" data-toggle="tab">未翻译</a></li>
             <li><a href="#subm" data-toggle="tab">已提交</a></li>
         </ul>
         <div id="myTabContent" class="tab-content">
@@ -30,10 +29,10 @@
                     <tr>
                         <th scope="col">疾病编号</th>
                         <th scope="col">疾病名称</th>
-                        <th scope="col">疾病描述</th>
+                        <th scope="col">疾病中文名称</th>
                         <th scope="col">状态查看</th>
                     </tr>
-                    {%for item in task_list%}
+                    {%for item in save_list%}
                     <tr align="center" border="1" cellpadding="10">
                         <td>{{item["disease_id"]}}</td>
                         <td>{{ item["disease_name"] }}</td>
@@ -50,7 +49,7 @@
                     <tr>
                         <th scope="col">疾病编号</th>
                         <th scope="col">疾病名称</th>
-                        <th scope="col">疾病描述</th>
+                        <th scope="col">疾病中文名称</th>
                         <th scope="col">状态查看</th>
                     </tr>
                     {%for item in task_list%}
@@ -70,10 +69,10 @@
                     <tr>
                         <th scope="col">疾病编号</th>
                         <th scope="col">疾病名称</th>
-                        <th scope="col">疾病描述</th>
+                        <th scope="col">疾病中文名称</th>
                         <th scope="col">状态查看</th>
                     </tr>
-                    {%for item in task_list%}
+                    {%for item in submit_list%}
                     <tr align="center" border="1" cellpadding="10">
                         <td>{{item["disease_id"]}}</td>
                         <td>{{ item["disease_name"] }}</td>
