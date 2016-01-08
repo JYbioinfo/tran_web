@@ -2,7 +2,9 @@
 /* CSS Document */
 /*共用*/
 body{font-family:"Microsoft Yahei","微软雅黑","宋体",Arial, Helvetica, sans-serif; font-size:14px;}
+.clear{clear: both;}
 .width78{width:78%;}
+.mTop{margin-top: 15px;}
 .top10{padding-top: 10px;}
 .bottom20{padding-bottom: 20px;}
 .list,.translate{padding-top: 50px;}
