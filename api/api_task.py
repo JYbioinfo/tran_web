@@ -30,14 +30,16 @@ def check_user():
     account = postdata["account"]
     password = postdata["password"]
     user_flag = 0
-    check_sql = "SELECT * FROM account_for_disease WHERE account = '%s' AND password = '%s';" \
+    check_sql = "SELECT user_right FROM account_for_disease WHERE account = '%s' AND password = '%s';" \
                 % (account, password)
     re = db.execute(check_sql)
     if re > 0:
+        user_right = db.fetchone()[0]
         user_flag = 1
     else:
         user_flag = 0
-    return json.dumps({"status": user_flag})
+        user_right = ''
+    return json.dumps({"status": user_flag, "user_flag":user_right})
 
 
 # @task_api.route("/tasks/list/",methods=["GET"])
@@ -437,7 +439,8 @@ def disease_info_update(sys_no):
             if re2 > 0:
                 return json.dumps({"status":"success!"})
             else:
-                return json.dumps({"status":"failed to update"})
+                return json.dumps({"status":"failed to update",
+                                   "data": {"user_right": user_right,"score":score,"flag":flag,"sys_no": sys_no}})
         # 录入员
         elif user_right == 1:
             if flag == 4:
@@ -449,7 +452,8 @@ def disease_info_update(sys_no):
                           (disease_name_zn,text_zn,flag,sys_no,account)
             re3 = db.execute(update_sql2)
             if re3 > 0:
-                return json.dumps({"status":"success!", "data": {"user_right": user_right}})
+                return json.dumps({"status":"success!", "data": {"user_right": user_right,
+                                                                 "flag":flag,"sys_no":sys_no,"text_zn":text_zn,"disease_name_zn":disease_name_zn}})
             else:
                 return json.dumps({"status":"failed to update"})
     except Exception,e:
