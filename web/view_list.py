@@ -12,7 +12,7 @@ list_view = Blueprint("list_view", __name__)
 listShow_html = "listShow.html"
 list_html = "list.html"
 login_html = "sign.html"
-mark_list_html = ""
+mark_list_html = "mark_list.html"
 
 
 @list_view.route("/", methods=["GET", "PUT"])
@@ -35,7 +35,7 @@ def login():
                 user = User()
                 user.account = account
                 user.passwd_enc = pw
-                user.role = 1
+                user.role = res["user_flag"]
                 if form.remember_me.data:
                     login_user(user, remember=True)
                 else:
@@ -64,14 +64,15 @@ def get_task_list():
         return redirect("/marks")
     data = json.dumps({"account": account, "password": pw})
     result = json.loads(requests.get(API_service+"/api/tasks/list/", data=data).text)
-    task_list = []
-    save_list = []
-    submit_list = []
-    for item in result["data"]:
-        task_list.append(item)
-        save_list.append(item)
+    # task_list = []
+    # save_list = []
+    # submit_list = []
+    # for item in result["data"]:
+    #     task_list.append(item)
+    #     save_list.append(item)
     # tasklist为已分配未翻译 save_list为已保存的
-    return render_template(list_html, task_list=task_list, save_list=save_list,submit_list=submit_list)
+    return render_template(list_html, task_list=result["data"]["new_get"], save_list=result["data"]["saved"],
+                           submit_list=result["data"]["commit"])
 
 
 @list_view.route("/marks", methods=["GET", "PUT"])
@@ -83,10 +84,17 @@ def get_mark_list():
         return redirect("/tasks")
     data = json.dumps({"account": account, "password": pw})
     result = json.loads(requests.get(API_service+"/api/tasks/list/", data=data).text)
+    print result
     marked_list = []
     submit_list = []
-    for item in result["data"]:
-        marked_list.append(item)
+    for k,v in result["data"]["pushed"].items():
+        for item in v:
+            item["account"] = k
+            submit_list.append(item)
+    for k,v in result["data"]["checked"].items():
+        for item in v:
+            item["account"] = k
+            marked_list.append(item)
     # tasklist为已分配未翻译 save_list为已保存的
     return render_template(mark_list_html, marked_list=marked_list, submit_list=submit_list)
 
@@ -107,7 +115,6 @@ def get_task_detail(sys_no):
         name_url = url_pre+quoteName+"&from=auto&to=zh"
         nameDic = json.loads(requests.get(name_url).text)
         name_baidu = u"百度翻译结果，仅供参考:\n"
-        print nameDic
         if "trans_result" in nameDic:
             for line in nameDic["trans_result"]:
                 name_baidu = name_baidu+line["dst"]+"\n"
@@ -117,7 +124,6 @@ def get_task_detail(sys_no):
         text_url = url_pre+quoteName+"&from=auto&to=zh"
         textDic = json.loads(requests.get(text_url).text)
         text_baidu = u"百度翻译结果，仅供参考:\n"
-        print textDic
         if "trans_result" in textDic:
             for line in textDic["trans_result"]:
                 text_baidu = text_baidu+line["dst"]+"\n"
