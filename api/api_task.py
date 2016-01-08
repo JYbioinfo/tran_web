@@ -284,7 +284,7 @@ def task_list_get():
         elif user_right == 0:
             # 按用户获得已提交的数据
             # 获得所有录入员
-            assessor_sql = "SELECT user_no,account FROM account_for_disease WHERE right = 1;"
+            assessor_sql = "SELECT user_no,account FROM account_for_disease WHERE user_right = 1;"
             res1 = db.execute(assessor_sql)
             if res1 > 0:
                 result21 = db.fetchall()
@@ -300,7 +300,7 @@ def task_list_get():
                 account = account_item[1]
                 # 该用户已提交的数据
                 sql1 = "SELECT sys_no,disease_id,disease_name,disease_name_zn,text,text_zn," \
-                       "sore FROM disease_detail WHERE account = '%s' AND flag = '%s';" % \
+                       "score FROM disease_detail WHERE account = '%s' AND flag = '%s';" % \
                        (account, 3)
                 res2 = db.execute(sql1)
                 if res2 > 0:
@@ -321,7 +321,7 @@ def task_list_get():
 
 
                 sql2 = "SELECT sys_no,disease_id,disease_name,disease_name_zn,text,text_zn," \
-                       "sore FROM disease_detail WHERE account = '%s' AND flag = '%s';" % \
+                       "score FROM disease_detail WHERE account = '%s' AND flag = '%s';" % \
                        (account, 4)
                 res3 = db.execute(sql2)
                 if res3 > 0:
