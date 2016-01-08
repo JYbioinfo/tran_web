@@ -18,12 +18,16 @@ class HmacPasswd:
         return binascii.b2a_hex(self.HmacPassword)
 
 
-def insert_user(account):
+def insert_user(account,password,user_right):
     db = DB()
-    passwd = HmacPasswd(account).get_hmacpassed()
-    insert_sql = "INSERT INTO account_for_disease(account,password) VALUES('%s','%s');" % (account,passwd)
+    passwd = HmacPasswd(password).get_hmacpassed()
+    select_sql = "SELECT max(user_no) FROM account_for_disease;"
+    re = db.execute(select_sql)
+    user_no = db.fetchone()[0] + 1
+    insert_sql = "INSERT INTO account_for_disease (user_no,account,password,user_right) " \
+                 "VALUES ('%s','%s','%s','%s');" % (user_no,account,passwd,user_right)
     db.execute(insert_sql)
     print "Insert Success"
 
 if __name__ == '__main__':
-    insert_user(sys.argv[1])
+    insert_user("wubo","admin",0)
