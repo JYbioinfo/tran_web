@@ -174,7 +174,7 @@ def reset_available():
             re = db.execute(reset_sql)
             if re == 0:
                 failed_list.append(sys_no)
-        return json.dumps({"status": "success!", "data": {"failed":failed_list}})
+        return json.dumps({"status": 001, "data": {"failed":failed_list}})
     except Exception,e:
         print str(e)
         return json.dumps({"status": 701, "message": "Internal error %s" % str(e)})
@@ -284,7 +284,7 @@ def task_list_get():
                         disease_name_zn = 'NA'
                     dict5["disease_name_zn"] = disease_name_zn
                     task_list3.append(dict5)
-            return json.dumps({"status": "success!",
+            return json.dumps({"status": 001,
                                "data": {"user_right": user_right, "new_get": task_list1, "saved": task_list2, "commit": task_list3}})
 
         # 审核员
@@ -347,7 +347,7 @@ def task_list_get():
                         account_dict2["sore"] = sore
                         account_list2.append(account_dict2)
                     big_dict["checked"][account] = account_list2
-            return json.dumps({"status": "success!", "data":big_dict})
+            return json.dumps({"status": 001, "data":big_dict})
     except Exception,e:
         print str(e)
         return json.dumps({"status": 701, "message": "Internal error %s" % str(e)})
@@ -409,7 +409,7 @@ def disease_info_get(sys_no):
         disease_info["sys_no"] = sys_no
         disease_info["score"] = score
         disease_info["account"] = account
-        return json.dumps({"status":"success!","data":disease_info})
+        return json.dumps({"status":001,"data":disease_info})
     except Exception,e:
         print str(e)
         return json.dumps({"status": 701, "message": "Internal error %s" % str(e)})
@@ -458,9 +458,9 @@ def disease_info_update(sys_no):
                           "sys_no = %d;" % (score,sys_no)
             re2 = db.execute(update_sql1)
             if re2 > 0:
-                return json.dumps({"status":"success!"})
+                return json.dumps({"status":001})
             else:
-                return json.dumps({"status":"failed to update",
+                return json.dumps({"status":001,
                                    "data": {"user_right": user_right,"score":score,"flag":flag,"sys_no": sys_no}})
         # 录入员
         elif user_right == 1:
@@ -473,10 +473,10 @@ def disease_info_update(sys_no):
                           (disease_name_zn,text_zn,flag,sys_no,account)
             re3 = db.execute(update_sql2)
             if re3 > 0:
-                return json.dumps({"status":"success!", "data": {"user_right": user_right,
+                return json.dumps({"status":001, "data": {"user_right": user_right,
                                                                  "flag":flag,"sys_no":sys_no,"text_zn":text_zn,"disease_name_zn":disease_name_zn}})
             else:
-                return json.dumps({"status":"failed to update"})
+                return json.dumps({"status":001})
     except Exception,e:
         print str(e)
         return json.dumps({"status": 701, "message": "Internal error %s" % str(e)})
