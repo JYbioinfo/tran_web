@@ -33,7 +33,7 @@ except Exception, e:
 
 class User(UserMixin):
     account = ""
-
+    role = 1
     def get_id(self):
         return self.account
 
