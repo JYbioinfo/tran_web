@@ -284,7 +284,7 @@ def task_list_get():
         elif user_right == 0:
             # 按用户获得已提交的数据
             # 获得所有录入员
-            assessor_sql = "SELECT user_no,account FROM account_for_disease WHERE right = 1;"
+            assessor_sql = "SELECT user_no,account FROM account_for_disease WHERE user_right = 1;"
             res1 = db.execute(assessor_sql)
             if res1 > 0:
                 result21 = db.fetchall()
@@ -300,7 +300,7 @@ def task_list_get():
                 account = account_item[1]
                 # 该用户已提交的数据
                 sql1 = "SELECT sys_no,disease_id,disease_name,disease_name_zn,text,text_zn," \
-                       "sore FROM disease_detail WHERE account = '%s' AND flag = '%s';" % \
+                       "score FROM disease_detail WHERE account = '%s' AND flag = '%s';" % \
                        (account, 3)
                 res2 = db.execute(sql1)
                 if res2 > 0:
@@ -321,7 +321,7 @@ def task_list_get():
 
 
                 sql2 = "SELECT sys_no,disease_id,disease_name,disease_name_zn,text,text_zn," \
-                       "sore FROM disease_detail WHERE account = '%s' AND flag = '%s';" % \
+                       "score FROM disease_detail WHERE account = '%s' AND flag = '%s';" % \
                        (account, 4)
                 res3 = db.execute(sql2)
                 if res3 > 0:
@@ -360,6 +360,14 @@ def disease_info_get(sys_no):
         user_flag = user_affirm(account,password)
         if user_flag == 0:
             return json.dumps({"status":"user not exit"})
+        # 获得用户权限
+        right_check = "SELECT user_right FROM account_for_disease WHERE account = '%s';" % account
+        re1 = db.execute(right_check)
+        if re1 > 0:
+            user_right = db.fetchone()[0]
+        else:
+            return json.dumps({"status":"sys'account not exsit"})
+
         select_sql = "SELECT disease_id,disease_name,disease_name_zn,text,text_zn,flag,account,score " \
                      "FROM disease_detail WHERE sys_no = %d;" % sys_no
         re = db.execute(select_sql)
@@ -368,7 +376,9 @@ def disease_info_get(sys_no):
             disease_id,disease_name,disease_name_zn,text,text_zn,flag,account,score = result
         else:
             return json.dumps({"status":"failed get disease info"})
+
         disease_info = {}
+        disease_info["user_right"] = user_right
         disease_info["disease_id"] = disease_id
         disease_info["disease_name"] = disease_name
         disease_info["disease_name_zn"] = disease_name_zn
@@ -441,7 +451,7 @@ def disease_info_update(sys_no):
                           (disease_name_zn,text_zn,flag,sys_no,account)
             re3 = db.execute(update_sql2)
             if re3 > 0:
-                return json.dumps({"status":"success!"})
+                return json.dumps({"status":"success!", "data": {"user_right": user_right}})
             else:
                 return json.dumps({"status":"failed to update"})
     except Exception,e:
