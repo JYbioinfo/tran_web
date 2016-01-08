@@ -19,12 +19,11 @@
     {% else %}
     <button class="btn btn-info" onclick="window.location.href='/marks'">返回列表</button>
     {% endif %}
-    <button class="btn btn-success" onclick="window.location.href='/logout'">注销</button>
     <div class="translate bottom20">
         <table class="table table-bordered table-hover">
             <tr>
                 <th scope="row" width="15%">疾病编号：</th>
-                <td width="42%">{{info["sys_no"]}}</td>
+                <td width="42%">{{info["disease_id"]}}</td>
                 <td width="42%">在编辑过程中请不要刷新页面，请及时保存</td>
             </tr>
             <tr>
