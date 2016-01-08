@@ -33,19 +33,19 @@ except Exception, e:
 
 class User(UserMixin):
     account = ""
-
     def get_id(self):
         return self.account
 
 
 @login_manager.user_loader
 def load_user(account):
-    db.execute("select password from account_for_disease where account='%s';" % account)
+    db.execute("select password,user_right from account_for_disease where account='%s';" % account)
     data = db.fetchone()
     if data is not None:
         user = User()
         user.account = account
         user.passwd_enc = data[0]
+        user.role = data[1]
         return user
     return None
 
