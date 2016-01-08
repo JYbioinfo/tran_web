@@ -134,11 +134,13 @@ def save_detail(sys_no):
     postdata["text_zn"] = request.form.get("text_zn", "")
     postdata["flag"] = int(request.form.get("flag", 2))
     result = json.loads(requests.put(API_service+"/api/tasks/%d/" % sys_no, data=json.dumps(postdata)).text)
-    if result["status"] == u'success!':
+    print result
+    if result["status"] == 1:
         if postdata["flag"] == 2:
             return redirect("/tasks/%d" % sys_no)
         else:
             return redirect("/tasks")
+    return redirect("/tasks/%d" % sys_no)
 
 
 @list_view.route("/tasks/<int:sys_no>/mark", methods=["PUT", "POST"])
@@ -150,7 +152,7 @@ def tran_mark(sys_no):
     postdata["flag"] = 4
     postdata["score"] = request.form.get("mark", "0")
     result = json.loads(requests.put(API_service+"/api/tasks/%d/" % sys_no, data=json.dumps(postdata)).text)
-    if result["status"] == u'success!':
+    if result["status"] == 1:
         if postdata["flag"] == 0:
             return redirect("/marks/%d" % sys_no)
         else:
