@@ -339,7 +339,8 @@ def task_list_get():
                         account_dict["sore"] = sore
                         account_list2.append(account_dict2)
                     big_dict["checked"] = account_list2
-            return json.dumps({"status": "success!", "data": {"user_right": user_right, "data":big_dict}})
+                    big_dict["user_right"] = user_right
+            return json.dumps({"status": "success!", "data":big_dict})
     except Exception,e:
         print str(e)
         return json.dumps({"status": 701, "message": "Internal error %s" % str(e)})
