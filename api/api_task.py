@@ -451,7 +451,7 @@ def disease_info_update(sys_no):
                           (disease_name_zn,text_zn,flag,sys_no,account)
             re3 = db.execute(update_sql2)
             if re3 > 0:
-                return json.dumps({"status":"success!"})
+                return json.dumps({"status":"success!", "data": {"user_right": user_right}})
             else:
                 return json.dumps({"status":"failed to update"})
     except Exception,e:
