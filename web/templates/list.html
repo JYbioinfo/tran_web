@@ -20,21 +20,20 @@
         </ul>
         <div id="myTabContent" class="tab-content">
             <!--已保存部分 start -->
-{#            <div class="tab-pane fade top10" id="home">#}
             <div class="top10 tab-pane fade in active" id="home">
                 <table class="table table-bordered table-hover">
                     <tr>
-                        <th scope="col">疾病编号</th>
-                        <th scope="col">疾病名称</th>
-                        <th scope="col">疾病中文名称</th>
-                        <th scope="col">状态查看</th>
+                        <th class="width10" scope="col">疾病编号</th>
+                        <th class="width40" scope="col">疾病名称</th>
+                        <th class="width40" scope="col">疾病中文名称</th>
+                        <th class="width10 text-center" scope="col">状态查看</th>
                     </tr>
                     {% for item in save_list %}
-                        <tr align="center" border="1" cellpadding="10">
+                        <tr>
                             <td>{{ item["disease_id"] }}</td>
                             <td>{{ item["disease_name"] }}</td>
                             <td>{{ item["disease_name_zn"] }}</td>
-                            <td><a href="/tasks/{{ item['sys_no'] }}" title="">查看详情</a></td>
+                            <td class="text-center"><a href="/tasks/{{ item['sys_no'] }}" title="">查看详情</a></td>
                         </tr>
                     {% endfor %}
                 </table>
@@ -42,21 +41,20 @@
             <!--已保存部分 end -->
 
             <!-- 未翻译部分 start -->
-{#            <div class="tab-pane fade in active top10" id="distr">#}
             <div class="top10 tab-pane fade" id="distr">
                 <table class="table table-bordered table-hover">
                     <tr>
-                        <th scope="col">疾病编号</th>
-                        <th scope="col">疾病名称</th>
-                        <th scope="col">疾病中文名称</th>
-                        <th scope="col">状态查看</th>
+                        <th class="width10" scope="col">疾病编号</th>
+                        <th class="width40" scope="col">疾病名称</th>
+                        <th class="width40" scope="col">疾病中文名称</th>
+                        <th class="width10 text-center" scope="col">状态查看</th>
                     </tr>
                     {% for item in task_list %}
-                        <tr align="center" border="1" cellpadding="10">
+                        <tr>
                             <td>{{ item["disease_id"] }}</td>
                             <td>{{ item["disease_name"] }}</td>
                             <td>{{ item["disease_name_zn"] }}</td>
-                            <td><a href="/tasks/{{ item['sys_no'] }}" title="">查看详情</a></td>
+                            <td class="text-center"><a href="/tasks/{{ item['sys_no'] }}" title="">查看详情</a></td>
                         </tr>
                     {% endfor %}
                 </table>
@@ -64,21 +62,20 @@
             <!-- 未翻译部分 end -->
 
             <!-- 已提交部分 start -->
-{#            <div class="tab-pane fade in active top10" id="subm">#}
             <div class="top10 tab-pane fade" id="subm">
                 <table class="table table-bordered table-hover">
                     <tr>
-                        <th scope="col">疾病编号</th>
-                        <th scope="col">疾病名称</th>
-                        <th scope="col">疾病中文名称</th>
-                        <th scope="col">状态查看</th>
+                        <th class="width10" scope="col">疾病编号</th>
+                        <th class="width40" scope="col">疾病名称</th>
+                        <th class="width40" scope="col">疾病中文名称</th>
+                        <th class="width10 text-center" scope="col">状态查看</th>
                     </tr>
                     {% for item in submit_list %}
-                        <tr align="center" border="1" cellpadding="10">
+                        <tr>
                             <td>{{ item["disease_id"] }}</td>
                             <td>{{ item["disease_name"] }}</td>
                             <td>{{ item["disease_name_zn"] }}</td>
-                            <td><a href="/tasks/{{ item['sys_no'] }}" title="">查看详情</a></td>
+                            <td class="text-center"><a href="/tasks/{{ item['sys_no'] }}" title="">查看详情</a></td>
                         </tr>
                     {% endfor %}
                 </table>
