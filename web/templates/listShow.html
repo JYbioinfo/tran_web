@@ -27,12 +27,12 @@
             <tr>
                 <th scope="row">疾病名称：</th>
                 <td>{{info["disease_name"]}}</td>
-                <td><textarea class="form-control" id="name_zh" name="" cols="" rows="">{{info["disease_name_zn"]}}</textarea></td>
+                <td><textarea class="form-control name-text" id="name_zh" name="" cols="" rows="">{{info["disease_name_zn"]}}</textarea></td>
             </tr>
             <tr>
                 <th scope="row">疾病描述：</th>
                 <td>{{info["text"]|safe}}</td>
-                <td><textarea class="form-control" id="text_zh" name="" cols="" rows="">{{info["text_zn"]}}</textarea>
+                <td><textarea class="form-control desc-text" id="text_zh" name="" cols="" rows="">{{info["text_zn"]}}</textarea>
                 </td>
             </tr>
             {% if role == 1 %}
