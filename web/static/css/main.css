@@ -19,9 +19,7 @@ a,a:hover,a:visited{color:#333; text-decoration: none;}
 .remeber{padding-left:76px;}
 /*翻译页*/
 .translate th{text-align: right;}
-.translate textarea {height: auto;width: 505px !important;}
-.translate textarea.name-text{max-height: 100px;min-height:200px !important;}
-.translate textarea.desc-text{max-height: 1000px;min-height:2000px !important;}
+.translate textarea {height: auto;max-height: 1000px;min-height: 300px !important; width: 505px !important;}
 .translate button{font-size:16px;padding:10px 60px;margin-right: 50px;}
 .translate-btn{padding-left:320px !important;}
 .score{margin-right: 10px;margin-top:5px;}
