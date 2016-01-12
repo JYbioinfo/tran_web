@@ -31,7 +31,9 @@
             </tr>
             <tr>
                 <th scope="row">疾病描述：</th>
-                <td>{{info["text"]|safe}}</td>
+                <td>
+                    <div class="desc-div"> {{info["text"]|safe}}</div>
+                </td>
                 <td><textarea class="form-control desc-text" id="text_zh" name="" cols="" rows="">{{info["text_zn"]}}</textarea>
                 </td>
             </tr>
