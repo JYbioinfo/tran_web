@@ -120,6 +120,7 @@ def get_task_detail(sys_no):
             for line in textDic["trans_result"]:
                 text_baidu = text_baidu+line["dst"]+"\n"
             info["text_zn"] = text_baidu
+    info["text"] = info["text"].replace("\n", "<br />")
     return render_template(listShow_html, info=info, role=role)
 
 

@@ -3,41 +3,36 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>翻译页</title>
-    <link rel="stylesheet" href="{{url_for('static',filename='css/bootstrap.min.css')}}">
-    <!-- 新 Bootstrap 核心 CSS 文件 -->
-    <link rel="stylesheet" href="{{url_for('static',filename='css/bootstrap-theme.min.css')}}">
-    <!-- 可选的Bootstrap主题文件（一般不用引入） -->
-    <link rel="stylesheet" href="{{url_for('static',filename='css/main.css')}}">
-    <!-- css主文件 -->
+    <link rel="stylesheet" href="{{url_for('static',filename='css/bootstrap.min.css')}}"> <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="{{url_for('static',filename='css/bootstrap-theme.min.css')}}"><!-- 可选的Bootstrap主题文件（一般不用引入） -->
+    <link rel="stylesheet" href="{{url_for('static',filename='css/main.css')}}"> <!-- css主文件 -->
 </head>
 
 <body>
 <!-- 翻译页 start -->
 <div class="container">
     {% if role == 1 %}
-    <button class="btn btn-info" onclick="window.location.href='/tasks'">返回列表</button>
+    <button class="btn btn-info pull-right mTop" onclick="window.location.href='/tasks'">返回列表</button>
     {% else %}
-    <button class="btn btn-info" onclick="window.location.href='/marks'">返回列表</button>
+    <button class="btn btn-info pull-right mTop" onclick="window.location.href='/marks'">返回列表</button>
     {% endif %}
-    <div class="translate bottom20">
+    <div class="clear translate bottom20">
+        <p class="fontRed">温馨提示：在编辑过程中请不要刷新页面，请及时保存。</p>
         <table class="table table-bordered table-hover">
             <tr>
-                <th scope="row" width="15%">疾病编号：</th>
-                <td width="42%">{{info["disease_id"]}}</td>
-                <td width="42%">在编辑过程中请不要刷新页面，请及时保存</td>
+                <th scope="row" width="8%">疾病编号：</th>
+                <td width="46%">{{ info["disease_id"] }}</td>
+                <td width="46%"></td>
             </tr>
             <tr>
                 <th scope="row">疾病名称：</th>
                 <td>{{info["disease_name"]}}</td>
-                <td><textarea class="form-control" id="name_zh" name="" cols=""
-                              rows="">{{info["disease_name_zn"]}}</textarea></td>
-                <!--<td><input class="form-control" id="name_zh" name="" type="text" value="{{info[" disease_name_zn"]}}" />-->
-                <!--</td>-->
+                <td><textarea class="form-control name-text" id="name_zh" name="" cols="" rows="">{{info["disease_name_zn"]}}</textarea></td>
             </tr>
             <tr>
                 <th scope="row">疾病描述：</th>
-                <td>{{info["text"]}}</td>
-                <td><textarea class="form-control" id="text_zh" name="" cols="" rows="">{{info["text_zn"]}}</textarea>
+                <td><div class="desc-div"> {{info["text"]|safe}}</div></td>
+                <td><textarea class="form-control desc-text" id="text_zh" name="" cols="" rows="">{{info["text_zn"]}}</textarea>
                 </td>
             </tr>
             {% if role == 1 %}
@@ -50,9 +45,9 @@
             </tr>
             {% else %}
             <tr>
-                <th scope="row">打分</th>
+                <th scope="row">打分：</th>
                 <td colspan="2">
-                    <select id="mark_select">
+                    <select class="form-control width10 pull-left score" id="mark_select">
                         <option>1</option>
                         <option>2</option>
                         <option>3</option>
