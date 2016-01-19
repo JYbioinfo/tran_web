@@ -3,7 +3,7 @@
 from tools.Mysql_db import DB
 from hashlib import sha256
 from hmac import HMAC
-import binascii, sys
+import binascii, sys, random
 
 class HmacPasswd:
 
@@ -39,4 +39,11 @@ def insert_user(account,password,user_right):
         print "Insert Success"
 
 if __name__ == '__main__':
-    insert_user("wubo","admin1",1)
+    l = ["madonglin","liyingnan","jinyue","liangzhanfeng","yangning","wenjie","zhangxuyang","caijing","chensiyao"]
+    for item in l:
+        s = item+"%d" % random.randint(10, 99)
+        print "account: %s  ,  password: %s" % (item, s)
+        insert_user(item, s, 1)
+
+
+
