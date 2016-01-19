@@ -442,6 +442,9 @@ def disease_info_update(sys_no):
         if type(flag) != int and flag == 0 and flag > 4 and flag < 2:
             return json.dumps({"status":"403, flag"})
 
+        disease_name_zn = disease_name_zn.replace("'","\\'")
+        text_zn = text_zn.replace("'","\\'")
+
         # 获得用户权限
         right_check = "SELECT user_right FROM account_for_disease WHERE account = '%s';" % account
         re1 = db.execute(right_check)
