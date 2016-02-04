@@ -504,6 +504,50 @@ def disease_info_update(sys_no):
         return json.dumps({"status": 701, "message": "Internal error %s" % str(e)})
 
 
+# 审核员保存
+@task_api.route("/tasks/checker/<int:sys_no>/",methods=["PUT"])
+def checker_update(sys_no):
+    try:
+        postdata = json.loads(request.data)
+        account = postdata["account"]
+        password = postdata["password"]
+        if type(account) != str and type(account) != unicode and len(account) <= 0:
+            return json.dumps({"status":"403, account"})
+        if type(password) != str and type(password) != unicode and len(password) <= 0:
+            return json.dumps({"status":"403, account"})
+        user_flag = user_affirm(account,password)
+        if user_flag == 0:
+            return json.dumps({"status":"user not exit"})
+
+        # 验证审核员身份
+        right_check = "SELECT user_right FROM account_for_disease WHERE account = '%s';" % account
+        re1 = db.execute(right_check)
+        if re1 > 0:
+            user_right = db.fetchone()[0]
+        else:
+            return json.dumps({"status":"sys'account not exsit"})
+
+        # 审核者
+        if user_right == 0:
+            #获取数据
+            disease_name_zn = postdata.get("disease_name_zn")
+            text_zn = postdata.get("text_zn")
+            user = postdata.get("user")
+            update_sql = "UPDATE disease_detail SET disease_name_zn = '%s',text_zn = '%s' " \
+                         "WHERE sys_no = %d AND account = '%s':" % \
+                         (disease_name_zn,text_zn,sys_no,user)
+            re2 = db.execute(update_sql)
+            if re2 > 0:
+                return json.dumps({"status":001,
+                                   "data": "check update success!"})
+            else:
+                return json.dumps({"status":001})
+        else:
+            return json.dumps({"status":"user_right not right!"})
+    except Exception,e:
+        print str(e)
+        return json.dumps({"status": 701, "message": "Internal error %s" % str(e)})
+
 
 
 
