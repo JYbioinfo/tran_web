@@ -8,8 +8,8 @@ def testConfig():
     config = ConfigParser.ConfigParser()
     config.read("../config.conf")
     env = config.get("Env", "env")
-    h = config.get(env, "api_host")
-    p = config.get(env, "api_port")
+    h = config.get(env, "remote_mysql_host")
+    p = config.get(env, "service_mysql_host")
     print type(h)
     print h
     print type(p)
@@ -201,21 +201,21 @@ def into_table():
         if len(vlist) == 1:
             l += len(vlist)
             for disease_id in vlist:
-                up_sql = "UPDATE group_disease SET group_no =%s WHERE disease_no='%s';" % (k, disease_id)
-                print up_sql
+                del_sql = "DELETE FROM group_disease WHERE disease_no = '%s';" % disease_id
+                # up_sql = "UPDATE group_disease SET group_no =%s WHERE disease_no='%s';" % (k, disease_id)
+                print del_sql
                 # sel_sql = "SELECT disease_name,text FROM disease_detail_copy WHERE disease_id = '%s';" % disease_id
                 # db.execute(sel_sql)
                 # t = db.fetchone()
                 # text = t[1].replace("'", "\\'")
                 # ins_sql = 'INSERT INTO group_disease(group_no,disease_no,disease_name,text)' \
                 #           ' VALUES(%s,"%s","%s","%s");' % (k, disease_id, t[0], text)
-                db.execute(up_sql)
+                print db.execute(del_sql)
     print l
 
 
 if __name__ == '__main__':
     # classify_name2()
     into_table()
-
     
 

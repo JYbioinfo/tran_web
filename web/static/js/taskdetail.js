@@ -47,6 +47,26 @@ function mark(sys_no) {
     turnForm.submit();
 }
 
-function logout() {
+function checker_update(sys_no){
+    name_zh = document.getElementById("name_zh").value;
+    text_zh = document.getElementById("text_zh").value;
 
+    var turnForm = document.createElement("form");
+    document.body.appendChild(turnForm);
+    turnForm.method = 'post';
+    turnForm.action = '/tasks/checker/' + sys_no + '/update';
+
+    var newElement = document.createElement("input");
+    newElement.setAttribute("name", "disease_name_zn");
+    newElement.setAttribute("type", "hidden");
+    newElement.setAttribute("value", name_zh);
+    turnForm.appendChild(newElement);
+
+    var textElement = document.createElement("input");
+    textElement.setAttribute("name", "text_zn");
+    textElement.setAttribute("type", "hidden");
+    textElement.setAttribute("value", text_zh);
+    turnForm.appendChild(textElement);
+
+    turnForm.submit();
 }
