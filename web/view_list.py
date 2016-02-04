@@ -65,7 +65,7 @@ def get_task_list():
     data = json.dumps({"account": account, "password": pw})
     result = json.loads(requests.get(API_service+"/api/tasks/list/", data=data).text)
     return render_template(list_html, task_list=result["data"]["new_get"], save_list=result["data"]["saved"],
-                           submit_list=result["data"]["commit"])
+                           submit_list=result["data"]["commit"],checked_list=result["data"]["checked"])
 
 
 @list_view.route("/marks", methods=["GET", "PUT"])
