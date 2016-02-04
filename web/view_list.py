@@ -146,14 +146,12 @@ def save_detail(sys_no):
 @list_view.route("/tasks/checker/<int:sys_no>/update", methods=["PUT", "POST"])
 @login_required
 def checker_save_detail(sys_no):
-    print
     postdata = {}
     postdata["account"] = current_user.account
     postdata["password"] = current_user.passwd_enc
     postdata["disease_name_zn"] = request.form.get("disease_name_zn", "")
     postdata["text_zn"] = request.form.get("text_zn", "")
     result = json.loads(requests.put(API_service+"/api/tasks/checker/%d/" % sys_no, data=json.dumps(postdata)).text)
-    print result
     return redirect("/tasks/%d" % sys_no)
 
 
