@@ -55,6 +55,7 @@
                         <option>5</option>
                     </select>
                     <button class="btn btn-success" onclick="mark({{info['sys_no']}})">确认</button>
+                    <button class="btn btn-success" onclick="window.location.href='/tasks/checker/dis/{{info['sys_no']}}'">不通过</button>
                     <button class="btn btn-info" onclick="checker_update({{info['sys_no']}})">保存</button>
                 </td>
             </tr>

@@ -155,6 +155,16 @@ def checker_save_detail(sys_no):
     return redirect("/tasks/%d" % sys_no)
 
 
+@list_view.route("/tasks/checker/dis/<int:sys_no>")
+@login_required
+def dis_submit(sys_no):
+    postdata = {}
+    postdata["account"] = current_user.account
+    postdata["password"] = current_user.passwd_enc
+    requests.put(API_service+"/api/tasks/checker/dis/%d/" % sys_no,data=json.dumps(postdata))
+    return redirect("/marks")
+
+
 @list_view.route("/tasks/<int:sys_no>/mark", methods=["PUT", "POST"])
 @login_required
 def tran_mark(sys_no):
