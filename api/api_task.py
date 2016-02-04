@@ -532,10 +532,9 @@ def checker_update(sys_no):
             #获取数据
             disease_name_zn = postdata.get("disease_name_zn")
             text_zn = postdata.get("text_zn")
-            user = postdata.get("user")
             update_sql = "UPDATE disease_detail SET disease_name_zn = '%s',text_zn = '%s' " \
-                         "WHERE sys_no = %d AND account = '%s':" % \
-                         (disease_name_zn,text_zn,sys_no,user)
+                         "WHERE sys_no = %d:" % \
+                         (disease_name_zn,text_zn,sys_no)
             re2 = db.execute(update_sql)
             if re2 > 0:
                 return json.dumps({"status":001,
