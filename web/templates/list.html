@@ -17,6 +17,7 @@
             <li class="active"><a href="#home" data-toggle="tab">已保存</a></li>
             <li><a href="#distr" data-toggle="tab">未翻译</a></li>
             <li><a href="#subm" data-toggle="tab">已提交</a></li>
+            <li><a href="#chec" data-toggle="tab">已审核</a></li>
         </ul>
         <div id="myTabContent" class="tab-content">
             <!--已保存部分 start -->
@@ -81,6 +82,26 @@
                 </table>
             </div>
             <!-- 已提交部分 end -->
+            <!-- 已审核部分 start -->
+            <div class="top10 tab-pane fade" id="chec">
+                <table class="table table-bordered table-hover">
+                    <tr>
+                        <th class="width10" scope="col">疾病编号</th>
+                        <th class="width40" scope="col">疾病名称</th>
+                        <th class="width40" scope="col">疾病中文名称</th>
+                        <th class="width10 text-center" scope="col">得分</th>
+                    </tr>
+                    {% for item in checked_list %}
+                        <tr>
+                            <td>{{ item["disease_id"] }}</td>
+                            <td>{{ item["disease_name"] }}</td>
+                            <td>{{ item["disease_name_zn"] }}</td>
+                            <td>{{ item["score"] }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            <!-- 已审核部分 end -->
 
         </div>
     </div>
