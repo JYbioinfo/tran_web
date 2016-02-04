@@ -284,8 +284,27 @@ def task_list_get():
                         disease_name_zn = 'NA'
                     dict5["disease_name_zn"] = disease_name_zn
                     task_list3.append(dict5)
+            # 返回已审核的数据
+            task_list4 = []
+            select_sql5 = "SELECT sys_no,disease_id,disease_name,disease_name_zn,score " \
+                          "FROM disease_detail WHERE flag = 4 AND account = '%s';" % \
+                          (account)
+            re6 = db.execute(select_sql5)
+            if re6 > 0:
+                result6 = db.fetchall()
+                for item6 in result6:
+                    sys_no,disease_id,disease_name,disease_name_zn,score = item6
+                    dict6 = {}
+                    dict6["sys_no"] = sys_no
+                    dict6["disease_id"] = disease_id
+                    dict6["disease_name"] = disease_name
+                    if disease_name_zn is None:
+                        disease_name_zn = 'NA'
+                    dict6["disease_name_zn"] = disease_name_zn
+                    dict6["score"] = score
+                    task_list4.append(dict6)
             return json.dumps({"status": 001,
-                               "data": {"user_right": user_right, "new_get": task_list1, "saved": task_list2, "commit": task_list3}})
+                               "data": {"user_right": user_right, "new_get": task_list1, "saved": task_list2, "commit": task_list3, "checked": task_list4}})
 
         # 审核员
         elif user_right == 0:
@@ -483,8 +502,6 @@ def disease_info_update(sys_no):
     except Exception,e:
         print str(e)
         return json.dumps({"status": 701, "message": "Internal error %s" % str(e)})
-
-
 
 
 
