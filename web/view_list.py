@@ -101,25 +101,26 @@ def get_task_detail(sys_no):
     result = json.loads(requests.get(API_service+"/api/tasks/%d/" % sys_no, data=data).text)
     info = result["data"]
     # 若数据库中为空则调用百度翻译api
-    url_pre = r"http://openapi.baidu.com/public/2.0/bmt/translate?client_id=6XUk46Y3LySSNvDNnvdo7K4p&q="
-    if info["disease_name_zn"] == "NA":
-        quoteName = urllib.quote(info["disease_name"])
-        name_url = url_pre+quoteName+"&from=auto&to=zh"
-        nameDic = json.loads(requests.get(name_url).text)
-        name_baidu = u"百度翻译结果，仅供参考:\n"
-        if "trans_result" in nameDic:
-            for line in nameDic["trans_result"]:
-                name_baidu = name_baidu+line["dst"]+"\n"
-            info["disease_name_zn"] = name_baidu
-    if info["text_zn"] == "NA":
-        quoteName = urllib.quote(info["text"])
-        text_url = url_pre+quoteName+"&from=auto&to=zh"
-        textDic = json.loads(requests.get(text_url).text)
-        text_baidu = u"百度翻译结果，仅供参考:\n"
-        if "trans_result" in textDic:
-            for line in textDic["trans_result"]:
-                text_baidu = text_baidu+line["dst"]+"\n"
-            info["text_zn"] = text_baidu
+    # url_pre = r"http://openapi.baidu.com/public/2.0/bmt/translate?client_id=6XUk46Y3LySSNvDNnvdo7K4p&q="
+    # if info["disease_name_zn"] == "NA":
+    #     quoteName = urllib.quote(info["disease_name"])
+    #     name_url = url_pre+quoteName+"&from=auto&to=zh"
+    #     nameDic = json.loads(requests.get(name_url).text)
+    #     name_baidu = u"百度翻译结果，仅供参考:\n"
+    #     if "trans_result" in nameDic:
+    #         for line in nameDic["trans_result"]:
+    #             name_baidu = name_baidu+line["dst"]+"\n"
+    #         info["disease_name_zn"] = name_baidu
+    # if info["text_zn"] == "NA":
+    #     quoteName = urllib.quote(info["text"])
+    #     text_url = url_pre+quoteName+"&from=auto&to=zh"
+    #     textDic = json.loads(requests.get(text_url).text)
+    #     text_baidu = u"百度翻译结果，仅供参考:\n"
+    #     print textDic
+    #     if "trans_result" in textDic:
+    #         for line in textDic["trans_result"]:
+    #             text_baidu = text_baidu+line["dst"]+"\n"
+    #         info["text_zn"] = text_baidu
     info["text"] = info["text"].replace("\n", "<br />")
     return render_template(listShow_html, info=info, role=role)
 
