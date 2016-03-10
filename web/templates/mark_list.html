@@ -24,6 +24,12 @@
         <div id="myTabContent" class="tab-content">
             <!--已提交部分 start -->
             <div class="top10 tab-pane fade in active" id="home">
+                <div>
+                    录入者列表：
+                    {% for i in submit_authors %}
+                        <button onclick="showAuthorOwns('{{ i }}')">{{ i }}</button>
+                    {% endfor %}
+                </div>
                 <table class="table table-bordered table-hover">
                     <tr>
                         <th class="width10" scope="col">疾病编号</th>
@@ -35,7 +41,7 @@
                         <tr align="center" border="1" cellpadding="10">
                             <td>{{ item["disease_id"] }}</td>
                             <td>{{ item["disease_name"] }}</td>
-                            <td>{{ item["account"] }}</td>
+                            <td author='{{ item["account"] }}'>{{ item["account"] }}</td>
                             <td class="text-center"><a href="/tasks/{{ item['sys_no'] }}" title="">查看详情</a></td>
                         </tr>
                     {% endfor %}
@@ -44,6 +50,12 @@
             <!--已提交部分 end -->
             <!-- 已审核部分 start -->
             <div class="top10 tab-pane fade" id="mark">
+                <div>
+                    录入者列表：
+                    {% for i in marked_authors %}
+                        <button onclick="showAuthorOwns('{{ i }}')">{{ i }}</button>
+                    {% endfor %}
+                </div>
                 <table class="table table-bordered table-hover">
                     <tr>
                         <th class="width10" scope="col">疾病编号</th>
@@ -55,7 +67,7 @@
                         <tr align="center" border="1" cellpadding="10">
                             <td>{{ item["disease_id"] }}</td>
                             <td>{{ item["disease_name"] }}</td>
-                            <td>{{ item["account"] }}</td>
+                            <td author='{{ item["account"] }}'>{{ item["account"] }}</td>
                             <td class="text-center"><a href="/tasks/{{ item['sys_no'] }}" title="">{{ item["sore"] }}</a></td>
                         </tr>
                     {% endfor %}
@@ -68,5 +80,12 @@
 <!-- 结果列表页 end -->
 <script src="{{ url_for('static',filename='js/jquery.min.js') }}"></script>
 <script src="{{ url_for('static',filename='js/bootstrap.min.js') }}"></script>
+<script>
+    function showAuthorOwns(author){
+        alert(author);
+        $(this).parent().next().children().hide();
+        $(this).parent().next().children([author=author]).parent().show();
+    }
+</script>
 </body>
 </html>
