@@ -79,16 +79,21 @@ def get_mark_list():
     result = json.loads(requests.get(API_service+"/api/tasks/list/", data=data).text)
     marked_list = []
     submit_list = []
+    submit_authors = []
+    marked_authors = []
     for k,v in result["data"]["pushed"].items():
+        submit_authors.append(k)
         for item in v:
             item["account"] = k
             submit_list.append(item)
     for k,v in result["data"]["checked"].items():
+        marked_authors.append(k)
         for item in v:
             item["account"] = k
             marked_list.append(item)
     # tasklist为已分配未翻译 save_list为已保存的
-    return render_template(mark_list_html, marked_list=marked_list, submit_list=submit_list)
+    return render_template(mark_list_html, marked_list=marked_list, submit_list=submit_list,
+                           submit_authors=submit_authors, marked_authors=marked_authors)
 
 
 @list_view.route("/tasks/<int:sys_no>", methods=["GET", "PUT"])
