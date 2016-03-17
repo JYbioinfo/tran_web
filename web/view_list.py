@@ -105,11 +105,6 @@ def get_task_detail(sys_no):
     data = json.dumps({"account": account, "password": pw})
     result = json.loads(requests.get(API_service+"/api/tasks/%d/" % sys_no, data=data).text)
     info = result["data"]
-    account_list = ["baihang10", "baihang22", "baihang23", "baihang21"]
-    if account in account_list and info["text_zn"] == "NA":
-        info["text_zn"] = u"感谢您的辛勤付出，我们对您的翻译很满意。您的翻译能力和专业背景比较契合我们公司对人才的需求，" \
-                          u"非常希望能有更多的合作机会，有些挺有意思的项目我们可以高薪聘请您。" \
-                          u"我们团队脱胎于中科院，如果有兴趣进一步了解，请直接加微信号ventolaj或电话我15201286523。谢谢！"
     # 若数据库中为空则调用百度翻译api
     # url_pre = r"http://openapi.baidu.com/public/2.0/bmt/translate?client_id=6XUk46Y3LySSNvDNnvdo7K4p&q="
     # if info["disease_name_zn"] == "NA":
