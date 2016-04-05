@@ -14,8 +14,8 @@ PASSWD = "Bdcbdc123456"
 # USER = "wubo@gene.ac"
 # PASSWD = "1993wb1116"
 encoding = 'utf-8'
-TO_ADDR_LIST = ["wubo@gene.ac", "budechao@gene.ac", "lixiyuan@gene.ac"]
-# TO_ADDR_LIST = ["wubo@gene.ac"]
+# TO_ADDR_LIST = ["wubo@gene.ac", "lixiyuan@gene.ac"]
+TO_ADDR_LIST = ["wubo@gene.ac"]
 db = DB()
 
 
@@ -60,7 +60,18 @@ def users_stats():
 
 
 def words_stats(account):
-    pass
+    result_dic = {}
+    sel_sql = "SELECT account,(SUM(LENGTH(disease_name_zn))+SUM(LENGTH(text_zn)))/3 as num  FROM disease_detail " \
+              "WHERE flag in (3,4) AND account LIKE '%s%%'GROUP BY account;" % account
+    db.execute(sel_sql)
+    l = db.fetchall()
+    for item in l:
+        result_dic[item[0]]=[item[1]]
+    sel_sql2 = "SELECT (SUM(LENGTH(disease_name_zn))+SUM(LENGTH(text_zn))/3) as num  " \
+               "FROM disease_detail WHERE flag in (3,4) AND account LIKE '%s%%';" % account
+    db.execute(sel_sql2)
+    result_dic["sum"] = [db.fetchone()[0]]
+    return result_dic
 
 
 def dic2html(dic, heading=None,title_list=None):
@@ -121,7 +132,12 @@ if __name__ == '__main__':
     content += dic2html(company_status(), "已提交翻译情况",["翻译方", "共分配","已提交","已审核","平均得分"])
     content += "<br><br>"
     content += dic2html(users_stats(), "各账户翻译情况",["账户", "分配数","提交数","已审核数", "平均得分"])
-    content += "<br><br></body></html>"
+    content += "<br><br>"
+    account_list = ["shangcai","baihang"]
+    for account in account_list:
+        content += dic2html(words_stats(account), "%s字数统计" % account,["账户","字数"])
+        content += "<br><br>"
+    content += "</body></html>"
     for to in TO_ADDR_LIST:
         thread_to_send(subject, content, to)
-    time.sleep(3)
+    time.sleep(4)

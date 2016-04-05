@@ -214,8 +214,80 @@ def into_table():
     print l
 
 
+# 放出
+def release2table():
+    get_sql = "SELECT group_no,disease_no FROM group_disease WHERE group_status = 6 AND status=0 AND " \
+              "group_no < 100 AND group_no > 74 ORDER BY group_no;"
+    db.execute(get_sql)
+    l = db.fetchall()
+    s = 0
+    for item in l:
+        sel_sql = "SELECT sys_no FROM disease_detail WHERE disease_id = '%s';" % item[1]
+        if db.execute(sel_sql) > 0:
+            s += 1
+            up_sql = "UPDATE disease_detail SET account = 'shangcai14',flag=1 WHERE disease_id = '%s';" % item[1]
+            up_sql2 = "UPDATE group_disease SET flag=1 WHERE disease_no = '%s';" % item[1]
+            db.execute(up_sql)
+            db.execute(up_sql2)
+            print "done"
+    print s
+
+
+# 放出2
+def rel2db():
+    account_list = ["shangcai16","shangcai17","shangcai18","shangcai19","shangcai20","baihang16","baihang17","baihang18","baihang19","baihang20"]
+    get_sql = "SELECT a.disease_id,b.group_no FROM disease_detail a LEFT JOIN group_disease b ON a.disease_id=b.disease_no WHERE a.flag = 99 ORDER BY b.group_no;"
+    n = db.execute(get_sql)
+    l = db.fetchall()
+    i = 0
+    count = 0
+    for item in l:
+        if count > 99:
+            i += 1
+            count = 0
+            up_sql = "UPDATE disease_detail SET flag=1,account='%s' WHERE flag=99 AND disease_id = '%s';" % (account_list[i], item[0])
+            print db.execute(up_sql)
+            count += 1
+        else:
+            up_sql = "UPDATE disease_detail SET flag=1,account='%s' WHERE flag=99 AND disease_id = '%s';" % (account_list[i], item[0])
+            print db.execute(up_sql)
+            count += 1
+
+# 放出短的
+def rel():
+    # account_list = ["shangcai21","shangcai22","shangcai23","shangcai24","shangcai25","baihang21","baihang22","baihang23","baihang24","baihang25"]
+    account_list = ["baihang23","baihang24","baihang25"]
+    get_sql = "SELECT disease_id,disease_name,text FROM disease_detail_little WHERE sys_no > 60671;"
+    db.execute(get_sql)
+    l = db.fetchall()
+    i = 0
+    count = 147
+    for item in l:
+        disease_id = item[0]
+        disease_name = item[1].strip('\\')
+        text = item[2].replace("'", ' ')
+        # print text
+        # ins_sql = "INSERT INTO disease_detail(disease_id,disease_name,text,account,flag) VALUES('%s','%s','%s','%s',1);" \
+        #           % (disease_id,disease_name,text,account_list[i])
+        # print ins_sql
+        # break
+        try:
+            ins_sql = "INSERT INTO disease_detail(disease_id,disease_name,text,account,flag) VALUES('%s','%s','%s','%s',1);" \
+                      % (disease_id,disease_name,text,account_list[i])
+            r = db.execute(ins_sql)
+            if r == 1:
+                print "insert success"
+            else:
+                print "fail"
+            count += 1
+            if count > 280:
+                count = 0
+                i += 1
+        except Exception,e:
+            print disease_id
+
+
 if __name__ == '__main__':
-    # classify_name2()
-    into_table()
+    rel()
     
 
